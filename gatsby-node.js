@@ -1,24 +1,25 @@
 'use strict'
 
-const path = require('path')
+const path = require('path');
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
-  const { createNodeField } = actions
+  const { createNodeField } = actions;
 
   // Sometimes, optional fields tend to get not picked up by the GraphQL
   // interpreter if not a single content uses it. Therefore, we're putting them
   // through `createNodeField` so that the fields still exist and GraphQL won't
   // trip up. An empty string is still required in replacement to `null`.
 
+  let slug = '';
   switch (node.internal.type) {
-    case 'MarkdownRemark': {
-      const { permalink, layout } = node.frontmatter
-      const { relativePath } = getNode(node.parent)
+    case 'MarkdownRemark':
+      const { permalink, layout } = node.frontmatter;
+      const { relativePath } = getNode(node.parent);
 
-      let slug = permalink
+      slug = permalink;
 
       if (!slug) {
-        slug = `/${relativePath.replace('.md', '')}/`
+        slug = `/${relativePath.replace('.md', '')}/`;
       }
 
       // Used to generate URL to view this content.
@@ -26,21 +27,34 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
         node,
         name: 'slug',
         value: slug || ''
-      })
+      });
 
       // Used to determine a page layout.
       createNodeField({
         node,
         name: 'layout',
         value: layout || ''
-      })
-    }
+      });
+      break;
+    case 'ContentfulProject':
+      slug = `/project/${node.contentful_id}`;
+
+      createNodeField({
+        node,
+        name: 'slug',
+        value: slug,
+      });
+      createNodeField({
+        node,
+        name: 'id',
+        value: node.contentful_id,
+      });
+
+      break;
   }
-}
+};
 
-exports.createPages = async ({ graphql, actions }) => {
-  const { createPage } = actions
-
+const generatePagesFromMarkdown = async (graphql, createPage) => {
   const allMarkdown = await graphql(`
     {
       allMarkdownRemark(limit: 1000) {
@@ -54,15 +68,17 @@ exports.createPages = async ({ graphql, actions }) => {
         }
       }
     }
-  `)
+  `);
 
   if (allMarkdown.errors) {
-    console.error(allMarkdown.errors)
-    throw new Error(allMarkdown.errors)
+    console.error(allMarkdown.errors);
+    throw new Error(allMarkdown.errors);
   }
 
   allMarkdown.data.allMarkdownRemark.edges.forEach(({ node }) => {
-    const { slug, layout } = node.fields
+    if (!node.fields) return;
+
+    const { slug, layout } = node.fields;
 
     createPage({
       path: slug,
@@ -80,6 +96,55 @@ exports.createPages = async ({ graphql, actions }) => {
         // Data passed to context is available in page queries as GraphQL variables.
         slug
       }
-    })
-  })
-}
+    });
+  });
+};
+
+const generatePagesFromContentful = async (graphql, createPage) => {
+  const generateFromProjects = async () => {
+    const projects = await graphql(`
+      {
+        allContentfulProject {
+          edges {
+            node {
+              fields {
+                slug
+                id
+              }
+            }
+          }
+        }
+      }
+    `);
+
+    if (projects.errors) {
+      console.error(projects.errors);
+      throw new Error(projects.errors);
+    }
+
+    projects.data.allContentfulProject.edges.forEach(({ node }) => {
+      const { slug, id } = node.fields;
+
+      createPage({
+        path: slug,
+        component: path.resolve('./src/templates/project.tsx'),
+        context: {
+          slug,
+          id,
+        }
+      });
+    });
+  };
+
+  await Promise.all([generateFromProjects()]);
+};
+
+exports.createPages = async ({ graphql, actions }) => {
+  const { createPage } = actions
+
+  const promises = [
+    generatePagesFromMarkdown(graphql, createPage),
+    generatePagesFromContentful(graphql, createPage),
+  ];
+  await Promise.all(promises);
+};

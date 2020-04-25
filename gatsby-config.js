@@ -14,6 +14,14 @@ module.exports = {
   },
   plugins: [
     {
+      resolve: `gatsby-source-contentful`,
+      options: {
+        spaceId: `udmg7z63vjmi`,
+        accessToken: process.env.BARONALEXANDER_CONTENTFUL_ACCESS_TOKEN,
+        host: process.env.CONTENTFUL_USE_DRAFT === 'true' ? `preview.contentful.com` : undefined,
+      }
+    },
+    {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'content',
