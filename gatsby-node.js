@@ -16,6 +16,8 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       const { permalink, layout } = node.frontmatter;
       const { relativePath } = getNode(node.parent);
 
+      if (!relativePath) return
+
       slug = permalink;
 
       if (!slug) {
