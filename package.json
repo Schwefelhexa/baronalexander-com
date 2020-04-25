@@ -26,6 +26,7 @@
   "dependencies": {
     "@emotion/core": "^10.0.10",
     "@emotion/styled": "^10.0.12",
+    "@openfonts/montserrat_all": "^1.44.1",
     "babel-plugin-styled-components": "^1.10.1",
     "classnames": "^2.2.6",
     "gatsby": "^2.10.0",
@@ -53,6 +54,8 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
+    "react-particles-js": "^3.1.0",
+    "typeface-comfortaa": "^1.1.4",
     "typescript": "^3.5.2"
   },
   "devDependencies": {
