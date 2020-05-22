@@ -1,5 +1,6 @@
 import React from 'react';
 import { graphql } from 'gatsby';
+import { Page } from '../components/Page';
 
 interface ProjectPageTemplateProps {
   data: {
@@ -15,11 +16,11 @@ interface ProjectPageTemplateProps {
 }
 
 const ProjectPageTemplate: React.FC<ProjectPageTemplateProps> = ({ data }) => (
-  <>
+  <Page name={data.contentfulProject.title}>
     <h1>{data.contentfulProject.title}</h1>
     {/* eslint-disable-next-line react/no-danger */}
     <div dangerouslySetInnerHTML={{ __html: data.contentfulProject.description.childMarkdownRemark.html }} />
-  </>
+  </Page>
 );
 export default ProjectPageTemplate;
 
