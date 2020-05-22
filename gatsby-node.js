@@ -145,7 +145,7 @@ exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
 
   const promises = [
-    generatePagesFromMarkdown(graphql, createPage),
+    //generatePagesFromMarkdown(graphql, createPage),
     generatePagesFromContentful(graphql, createPage),
   ];
   await Promise.all(promises);
