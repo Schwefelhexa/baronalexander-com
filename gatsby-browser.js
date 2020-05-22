@@ -3,7 +3,3 @@
  *
  * See: https://www.gatsbyjs.org/docs/browser-apis/
  */
-
-// Load fonts
-import 'typeface-comfortaa';
-import '@openfonts/montserrat_all';
