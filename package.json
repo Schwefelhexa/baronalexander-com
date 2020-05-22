@@ -1,12 +1,9 @@
 {
-  "name": "gatsby-starter-typescript-plus",
-  "description": "A starter kit for TypeScript-based Gatsby projects with sensible defaults.",
+  "name": "baronalexander-com",
+  "description": "A personal portfolio for me, Alexander Baron",
   "version": "1.0.0",
   "private": true,
-  "author": "Resi Respati <resir014@gmail.com>",
-  "keywords": [
-    "gatsby"
-  ],
+  "author": "Alexander Baron <alexander@baron-online.eu>",
   "license": "MIT",
   "main": "n/a",
   "scripts": {
