@@ -3,4 +3,3 @@
  *
  * See: https://www.gatsbyjs.org/docs/browser-apis/
  */
-import "tailwindcss/dist/base.css";
