@@ -1,0 +1,20 @@
+@mixin screen-sm {
+  @media (min-width: map-get($screens, "sm")) {
+    @content;
+  }
+}
+@mixin screen-md {
+  @media (min-width: map-get($screens, "md")) {
+    @content;
+  }
+}
+@mixin screen-lg {
+  @media (min-width: map-get($screens, "lg")) {
+    @content;
+  }
+}
+@mixin screen-xl {
+  @media (min-width: map-get($screens, "xl")) {
+    @content;
+  }
+}

@@ -6,4 +6,10 @@
 
 .page {
   padding: 2rem 1rem;
+  width: 100vw;
+  overflow-x: hidden;
+
+  @include screen-lg {
+    padding: 2rem;
+  }
 }

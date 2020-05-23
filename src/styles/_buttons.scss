@@ -28,11 +28,26 @@
 
   justify-content: space-evenly;
 
+  @include screen-lg {
+    flex-direction: row;
+  }
+
   &__item {
-    margin-bottom: 2rem;
+    $mb: 2rem;
+
+    margin-bottom: $mb;
+
+    @include screen-lg {
+      margin-right: 4rem;
+    }
 
     &--last {
       margin-bottom: 0;
+
+      @include screen-lg {
+        margin-bottom: $mb;
+        margin-right: 0;
+      }
     }
   }
 }
