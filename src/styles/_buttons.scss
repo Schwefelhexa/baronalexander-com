@@ -1,0 +1,38 @@
+.btn {
+  border: none;
+  background: none;
+
+  width: 100%;
+
+  background-color: var(--clr-main);
+  color: var(--clr-secondary);
+
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 500;
+
+  padding: 1rem 4rem;
+
+  cursor: pointer;
+
+  &--secondary {
+    background: none;
+    color: var(--clr-main);
+    border: 2px solid var(--clr-main);
+  }
+}
+
+.btn-group {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-evenly;
+
+  &__item {
+    margin-bottom: 2rem;
+
+    &--last {
+      margin-bottom: 0;
+    }
+  }
+}

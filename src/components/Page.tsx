@@ -24,14 +24,21 @@ interface IProps {
   name?: string;
   children: React.ReactNode;
 }
-export const Page: React.FC<IProps> = ({ name, children }) => {
+export const Page: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({
+  name, className, children, ...props
+}) => {
   const info = useStaticQuery<InfoResponse>(InfoQuery);
   const { title } = info.site.siteMetadata;
 
   return (
     <>
       <Helmet title={`${title} ${name ? ` - ${name}` : ''}`} />
-      {children}
+      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+      <div className="page-wrapper">
+        <div className={`page ${className ?? ''}`} {...props}>
+          {children}
+        </div>
+      </div>
     </>
   );
 };
