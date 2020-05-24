@@ -3,6 +3,7 @@ import { Page } from '../components/Page';
 import { Button, ButtonGroup } from '../components/designsystem/Button';
 import { HeroText, Hero, HeroSubtext } from '../components/designsystem/Hero';
 import { Divtext } from '../components/designsystem/Divtext';
+import { Link } from '../components/designsystem/Link';
 
 const IndexPage: React.FC = () => (
   <Page className="homepage">
@@ -16,7 +17,9 @@ const IndexPage: React.FC = () => (
         <Divtext>
           <span>Student</span>
           <span>@</span>
-          <span>Gymnasium Gerresheim</span>
+          <span>
+            <Link to="https://gymnasium-gerresheim.de" external>Gymnasium Gerresheim</Link>
+          </span>
         </Divtext>
       </HeroSubtext>
     </Hero>

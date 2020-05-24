@@ -1,0 +1,13 @@
+%deco {
+    text-decoration: underline 4px;
+  }
+
+.link {
+  color: var(--clr-main);
+
+  @extend %deco;
+
+  &:visited {
+    @extend %deco;
+  }
+}
