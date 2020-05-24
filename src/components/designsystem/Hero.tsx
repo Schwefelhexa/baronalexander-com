@@ -1,21 +1,27 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 
+type HeroChildrenArray = [
+  React.ReactElement<IHeroTextProps>,
+  ...React.ReactElement<IHeroSubtextProps>[]
+];
 interface IHeroProps {
-  children: [
-    React.ReactElement<IHeroTextProps>,
-    ...React.ReactElement<IHeroSubtextProps>[]
-  ];
+  children: React.ReactElement<IHeroTextProps> | HeroChildrenArray;
 }
-export const Hero: React.FC<IHeroProps> = ({ children }) => (
-  <div className="hero">
-    <HeroText {...children[0].props} />
-    {children.slice(1).map((sub, i) => (
+export const Hero: React.FC<IHeroProps> = ({ children }) => {
+  const array = Array.isArray(children);
+  const first: React.ReactElement<IHeroTextProps> = array ? (children as HeroChildrenArray)[0] : children as any;
+
+  return (
+    <div className="hero">
+      <HeroText {...first.props} />
+      {array && (children as HeroChildrenArray).slice(1).map((sub, i) => (
       // eslint-disable-next-line react/no-array-index-key
-      <HeroSubtext key={i} {...sub.props} />
-    ))}
-  </div>
-);
+        <HeroSubtext key={i} {...sub.props} />
+      ))}
+    </div>
+  );
+};
 
 interface IHeroTextProps {
   children: React.ReactNode;
