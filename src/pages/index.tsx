@@ -4,7 +4,7 @@ import { Page } from '../components/Page';
 import { Button, ButtonGroup } from '../components/designsystem/Button';
 import { HeroText, Hero, HeroSubtext } from '../components/designsystem/Hero';
 import { Divtext } from '../components/designsystem/Divtext';
-import { Link } from '../components/designsystem/Link';
+import { Link, LinkButton } from '../components/designsystem/Link';
 
 interface IIndexPageProps {
   data: IndexPageQueryResponse;
@@ -35,7 +35,7 @@ const IndexPage: React.FC<IIndexPageProps> = ({ data }) => (
     </Hero>
 
     <ButtonGroup>
-      <Button variant="secondary">Stuff I do</Button>
+      <LinkButton to="/projects" variant="secondary">Stuff I do</LinkButton>
       <Button>Contact me</Button>
     </ButtonGroup>
   </Page>

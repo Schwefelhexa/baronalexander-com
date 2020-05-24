@@ -1,6 +1,11 @@
+a {
+  text-decoration: none;
+}
+
 %deco {
-    text-decoration: underline 4px;
-  }
+  text-decoration: underline;
+  text-decoration: underline 4px;
+}
 
 .link {
   color: var(--clr-main);

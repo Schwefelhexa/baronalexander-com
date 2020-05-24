@@ -1,6 +1,9 @@
 .btn {
   border: none;
   background: none;
+  display: inline-block;
+
+  text-align: center;
 
   width: 100%;
 
@@ -15,6 +18,8 @@
 
   cursor: pointer;
 
+  border: 2px solid var(--clr-main);
+
   transition: border-radius linear 0.05s;
   &:focus {
     outline: none;
@@ -24,7 +29,6 @@
   &--secondary {
     background: none;
     color: var(--clr-main);
-    border: 2px solid var(--clr-main);
   }
 }
 
@@ -40,6 +44,8 @@
 
   &__item {
     $mb: 2rem;
+
+    width: 100%;
 
     margin-bottom: $mb;
 
