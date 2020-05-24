@@ -9,7 +9,14 @@ module.exports = {
     author: {
       name: 'Alexander Baron',
       url: 'https://baronalexander.com/',
-      email: 'me@baronalexander.com'
+      email: 'me@baronalexander.com',
+      work: {
+        description: 'Student',
+        place: {
+          name: 'Gymnasium Gerresheim',
+          page: 'https://gymnasium-gerresheim.de/'
+        },
+      },
     }
   },
   plugins: [
