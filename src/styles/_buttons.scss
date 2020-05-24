@@ -15,6 +15,12 @@
 
   cursor: pointer;
 
+  transition: border-radius linear 0.05s;
+  &:focus {
+    outline: none;
+    border-radius: 0.5em;
+  }
+
   &--secondary {
     background: none;
     color: var(--clr-main);
