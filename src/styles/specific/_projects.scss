@@ -1,0 +1,43 @@
+.projects {
+  margin-top: 4rem;
+
+  @include screen-lg {
+    margin-top: 4rem;
+  }
+}
+
+.project-overview {
+  max-width: clamp(20rem, 20vw, 60rem);
+  margin-bottom: 3.5rem;
+
+  &--last {
+    margin-bottom: 0;
+  }
+
+  &__title {
+    margin: 0;
+
+    color: var(--clr-main);
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(1.85rem, 5vw, 2.4rem);
+    text-decoration: underline;
+  }
+
+  &__description {
+    font-family: var(--font-default);
+    color: var(--clr-main-txt);
+    line-height: normal;
+  }
+
+  &__technologies {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__technology {
+    font-family: var(--font-default);
+    color: var(--clr-main-txt);
+  }
+}
