@@ -10,6 +10,10 @@ a {
 .link {
   color: var(--clr-main);
 
+  &--stealthy {
+    text-decoration: none;
+  }
+
   @extend %deco;
 
   &:visited {

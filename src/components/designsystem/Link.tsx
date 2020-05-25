@@ -6,16 +6,22 @@ interface ILinkProps {
   to: string;
   children: React.ReactChild;
   external?: boolean;
+  stealthy?: boolean;
 }
-export const Link: React.FC<ILinkProps> = ({ to, external = false, children }) => (
-  <>
-    {external ? (
-      <a href={to} target="_blank" rel="noopener noreferrer" className="link link--external">{children}</a>
-    ) : (
-      <GatsbyLink className="link link--internal" to={to}>{children}</GatsbyLink>
-    )}
-  </>
-);
+export const Link: React.FC<ILinkProps> = ({
+  to, external = false, stealthy = false, children,
+}) => {
+  const sharedClasses = `link ${stealthy ? 'link--stealthy' : ''}`;
+  return (
+    <>
+      {external ? (
+        <a href={to} target="_blank" rel="noopener noreferrer" className={`${sharedClasses} link--external`}>{children}</a>
+      ) : (
+        <GatsbyLink className={`${sharedClasses} link--internal`} to={to}>{children}</GatsbyLink>
+      )}
+    </>
+  );
+};
 
 interface IButtonLinkProps {
   to: string;

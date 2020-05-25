@@ -2,6 +2,7 @@ import React from 'react';
 import { graphql, Link as GatsbyLink } from 'gatsby';
 import { Page } from '../components/Page';
 import { Hero, HeroText } from '../components/designsystem/Hero';
+import { Link } from '../components/designsystem/Link';
 
 interface IProjectsPageProps {
   data: ProjectsPageQueryResponse;
@@ -19,10 +20,12 @@ const ProjectsPage: React.FC<IProjectsPageProps> = ({ data }) => (
             <p className="project-overview__description">{node.description.description}</p>
           </GatsbyLink>
           <div className="project-overview__technologies">
-            {node.technologies.map((technology, i) => (
-              <span className="project-overview__technology" key={technology.contentful_id}>
-                {technology.name}
-              </span>
+            {node.technologies.map((technology) => (
+              <div className="project-overview__technology" key={technology.contentful_id}>
+                <Link to={technology.link} external stealthy>
+                  {technology.name}
+                </Link>
+              </div>
             ))}
           </div>
         </div>
@@ -45,6 +48,7 @@ query ProjectsPageQuery {
         technologies {
           name
           contentful_id
+          link
         }
         contentful_id
       }
@@ -62,6 +66,7 @@ interface ProjectsPageQueryResponse {
         technologies: {
           name: string;
           contentful_id: string;
+          link: string;
         }[]
         contentful_id: string;
       }
