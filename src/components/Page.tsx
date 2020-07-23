@@ -32,7 +32,7 @@ export const Page: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({
 
   return (
     <>
-      <Helmet title={`${title} ${name ? ` - ${name}` : ''}`} />
+      <Helmet title={`${title} ${name ? ` - ${name}` : ''}`} htmlAttributes={{ lang: 'en' }} />
       {/* eslint-disable-next-line react/jsx-props-no-spreading */}
       <div className="page-wrapper">
         <div className={`page ${className ?? ''}`} {...props}>
