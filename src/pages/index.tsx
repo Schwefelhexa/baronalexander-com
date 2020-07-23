@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { graphql } from 'gatsby';
 import { Page } from '../components/Page';
-import { Button, ButtonGroup } from '../components/designsystem/Button';
+import { ButtonGroup } from '../components/designsystem/Button';
 import { HeroText, Hero, HeroSubtext } from '../components/designsystem/Hero';
 import { Divtext } from '../components/designsystem/Divtext';
 import { Link, LinkButton } from '../components/designsystem/Link';
@@ -36,7 +36,7 @@ const IndexPage: React.FC<IIndexPageProps> = ({ data }) => (
 
     <ButtonGroup>
       <LinkButton to="/projects" variant="secondary">Stuff I do</LinkButton>
-      <Button>Contact me</Button>
+      <LinkButton to="/contact">Contact me</LinkButton>
     </ButtonGroup>
   </Page>
 );
