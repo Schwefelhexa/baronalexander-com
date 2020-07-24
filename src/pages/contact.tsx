@@ -13,32 +13,39 @@ const emailRegex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}
 interface ContactData {
   title: string;
   message: string;
-  mail: string;
+  email: string;
 }
+type OptionalContactData = { [P in keyof ContactData]?: string };
 const ContactPage: React.FC = () => (
   <Page className="contactpage">
     <Hero>
       <HeroText>Contact</HeroText>
     </Hero>
     <Formik<ContactData>
-      initialValues={{ title: '', message: '', mail: '' }}
+      initialValues={{ title: '', message: '', email: '' }}
       validate={(values) => {
-        const errors: { [P in keyof ContactData]?: string } = {};
+        const errors: OptionalContactData = {};
 
         if (values.title.trim().length === 0) errors.title = 'Please provide a title';
         if (values.message.trim().length === 0) errors.message = 'Please provide a message';
-        if (values.mail.trim().length === 0) errors.mail = 'Please provide an email';
-        else if (!values.mail.match(emailRegex)) errors.mail = 'Please provide a valid email';
+        if (values.email.trim().length === 0) errors.email = 'Please provide an email';
+        else if (!values.email.match(emailRegex)) errors.email = 'Please provide a valid email';
 
         return errors;
       }}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={async (values) => {
+        const params = (Object.keys(values) as (keyof ContactData)[]).reduce((total, key) => `${total}&${key}=${encodeURIComponent(values[key])}`, '').substr(1);
+        const url = `https://us-central1-baronalexander-com-d3e48.cloudfunctions.net/contact?${params}`;
+
+        const result = await fetch(url);
+        console.log(result.status);
+      }}
     >
       {() => (
         <Form>
           <Input label="Title" name="title" />
           <Textarea label="Message" name="message" />
-          <Input label="Your email" name="mail" />
+          <Input label="Your email" name="email" />
           <Button type="submit">Send</Button>
         </Form>
       )}
