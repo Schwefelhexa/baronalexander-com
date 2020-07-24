@@ -15,4 +15,25 @@
     flex-direction: column;
     justify-content: space-between;
   }
+
+  .status {
+    font-family: var(--font-display);
+    font-weight: var(--font-weight-bold);
+
+    font-size: 1.4rem;
+    min-height: 1.2em;
+
+    margin-bottom: 1rem;
+
+    &[data-success=true] {
+      color: var(--clr-success);
+    }
+    &[data-success=false] {
+      color: var(--clr-error);
+
+      .link {
+        color: var(--clr-error);
+      }
+    }
+  }
 }

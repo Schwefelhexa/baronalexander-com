@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Formik, Form } from 'formik';
 
 import { Page } from '../components/Page';
-import { Hero, HeroText } from '../components/designsystem/Hero';
+import { Hero, HeroText, HeroSubtext } from '../components/designsystem/Hero';
 import { Button } from '../components/designsystem/Button';
 import { Input, Textarea } from '../components/designsystem/Input';
+import { Link } from '../components/designsystem/Link';
 
 // Taken from https://emailregex.com/
 // eslint-disable-next-line no-control-regex, max-len
@@ -16,44 +17,65 @@ interface ContactData {
   email: string;
 }
 type OptionalContactData = { [P in keyof ContactData]?: string };
-const ContactPage: React.FC = () => (
-  <Page className="contactpage">
-    <Hero>
-      <HeroText>Contact</HeroText>
-    </Hero>
-    <Formik<ContactData>
-      initialValues={{ title: '', message: '', email: '' }}
-      validate={(values) => {
-        const errors: OptionalContactData = {};
+const ContactPage: React.FC = () => {
+  const [hadSubmit, setHadSubmit] = useState(false);
+  const [hadSuccessfullSubmit, setHadSuccessfullSubmit] = useState(false);
 
-        if (values.title.trim().length === 0) errors.title = 'Please provide a title';
-        if (values.message.trim().length === 0) errors.message = 'Please provide a message';
-        if (values.email.trim().length === 0) errors.email = 'Please provide an email';
-        else if (!values.email.match(emailRegex)) errors.email = 'Please provide a valid email';
+  const statusMessage = hadSuccessfullSubmit ? 'Your message has been sent!' : (
+    <span>
+      An error occured! I&apos;m sorry :(
+      <br />
+      <Link external to="mailto:me@baronalexander.com">Maybe contact me via email instead?</Link>
+    </span>
+  );
 
-        return errors;
-      }}
-      onSubmit={async (values, helpers) => {
-        const params = (Object.keys(values) as (keyof ContactData)[])
-          .reduce((total, key) => `${total}&${key}=${encodeURIComponent(values[key])}`, '')
-          .substr(1);
-        const url = `https://us-central1-baronalexander-com-d3e48.cloudfunctions.net/contact?${params}`;
+  return (
+    <Page className="contactpage">
+      <Hero>
+        <HeroText>Contact</HeroText>
+      </Hero>
+      <span className="status" data-success={hadSuccessfullSubmit}>{hadSubmit && statusMessage}</span>
+      <Formik<ContactData>
+        initialValues={{ title: '', message: '', email: '' }}
+        validate={(values) => {
+          const errors: OptionalContactData = {};
 
-        helpers.setSubmitting(true);
-        await fetch(url);
-        helpers.setSubmitting(false);
-      }}
-    >
-      {({ isSubmitting }) => (
-        <Form>
-          <Input label="Title" name="title" />
-          <Textarea label="Message" name="message" />
-          <Input label="Your email" name="email" />
-          <Button type="submit" loading={isSubmitting} loadingMessage="Sending...">Send</Button>
-        </Form>
-      )}
-    </Formik>
-  </Page>
-);
+          if (values.title.trim().length === 0) errors.title = 'Please provide a title';
+          if (values.message.trim().length === 0) errors.message = 'Please provide a message';
+          if (values.email.trim().length === 0) errors.email = 'Please provide an email';
+          else if (!values.email.match(emailRegex)) errors.email = 'Please provide a valid email';
+
+          return errors;
+        }}
+        onSubmit={async (values, helpers) => {
+          const params = (Object.keys(values) as (keyof ContactData)[])
+            .reduce((total, key) => `${total}&${key}=${encodeURIComponent(values[key])}`, '')
+            .substr(1);
+          const url = `https://us-central1-baronalexander-com-d3e48.cloudfunctions.net/contact?${params}`;
+
+          helpers.setSubmitting(true);
+          const result = await fetch(url);
+          if (result.status === 200) {
+            setHadSuccessfullSubmit(true);
+            helpers.resetForm();
+          } else {
+            setHadSuccessfullSubmit(false);
+          }
+          setHadSubmit(true);
+          helpers.setSubmitting(false);
+        }}
+      >
+        {({ isSubmitting }) => (
+          <Form>
+            <Input label="Title" name="title" />
+            <Textarea label="Message" name="message" />
+            <Input label="Your email" name="email" />
+            <Button type="submit" loading={isSubmitting} loadingMessage="Sending...">Send</Button>
+          </Form>
+        )}
+      </Formik>
+    </Page>
+  );
+};
 
 export default ContactPage;
