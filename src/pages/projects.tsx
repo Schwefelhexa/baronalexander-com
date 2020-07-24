@@ -15,7 +15,7 @@ const ProjectsPage: React.FC<IProjectsPageProps> = ({ data }) => (
     <div className="projects">
       {data.allContentfulProject.edges.map(({ node }, i, arr) => (
         <div className={`project-overview ${i === (arr.length - 1) ? 'project-overview--last' : ''}`} key={node.contentful_id}>
-          <GatsbyLink to={`/projects/${node.contentful_id}`}>
+          <GatsbyLink to={`/project/${node.contentful_id}`}>
             <h3 className="project-overview__title">{node.title}</h3>
             <p className="project-overview__description">{node.description.description}</p>
           </GatsbyLink>
