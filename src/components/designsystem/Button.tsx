@@ -4,15 +4,20 @@ import React from 'react';
 export type ButtonVariant = 'primary' | 'secondary';
 interface IButtonProps {
   variant?: ButtonVariant;
+  loading?: boolean;
+  loadingMessage?: React.ReactNode;
 }
 type FullButtonProps = IButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>;
 export const Button: React.FC<FullButtonProps> = ({
-  variant = 'primary', type = 'button', className = '', children, value, ...props
-}) => (
-  // eslint-disable-next-line react/button-has-type
-  <button type={type} className={`btn btn--${variant} ${className}`} {...props}>{children ?? value}</button>
-);
+  variant = 'primary', type = 'button', className = '', children, value, loading, loadingMessage = children ?? value, disabled, ...props
+}) => {
+  const content = loading ? loadingMessage : children ?? value;
 
+  return (
+    // eslint-disable-next-line react/button-has-type
+    <button type={type} className={`btn btn--${variant} ${className}`} disabled={loading ?? disabled} {...props}>{content}</button>
+  );
+};
 
 interface IButtonGroupProps {
   children: React.ReactElement[];

@@ -33,20 +33,23 @@ const ContactPage: React.FC = () => (
 
         return errors;
       }}
-      onSubmit={async (values) => {
-        const params = (Object.keys(values) as (keyof ContactData)[]).reduce((total, key) => `${total}&${key}=${encodeURIComponent(values[key])}`, '').substr(1);
+      onSubmit={async (values, helpers) => {
+        const params = (Object.keys(values) as (keyof ContactData)[])
+          .reduce((total, key) => `${total}&${key}=${encodeURIComponent(values[key])}`, '')
+          .substr(1);
         const url = `https://us-central1-baronalexander-com-d3e48.cloudfunctions.net/contact?${params}`;
 
-        const result = await fetch(url);
-        console.log(result.status);
+        helpers.setSubmitting(true);
+        await fetch(url);
+        helpers.setSubmitting(false);
       }}
     >
-      {() => (
+      {({ isSubmitting }) => (
         <Form>
           <Input label="Title" name="title" />
           <Textarea label="Message" name="message" />
           <Input label="Your email" name="email" />
-          <Button type="submit">Send</Button>
+          <Button type="submit" loading={isSubmitting} loadingMessage="Sending...">Send</Button>
         </Form>
       )}
     </Formik>
