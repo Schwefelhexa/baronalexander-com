@@ -1,0 +1,37 @@
+%display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--clr-main);
+}
+
+.hero {
+  &__text {
+    @extend %display;
+    font-size: clamp(4rem, 15vw, 8rem);
+    line-height: 100%;
+
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  &__subtext {
+    @extend %display;
+    font-size: clamp(1.5rem, 6vw, 3rem);
+
+    margin-top: 0;
+  }
+}
+
+.divtext {
+  display: flex;
+  flex-direction: row;
+
+  &__item {
+    display: inline-block;
+    margin-right: 0.2em;
+
+    &--last {
+      margin-right: 0;
+    }
+  }
+}

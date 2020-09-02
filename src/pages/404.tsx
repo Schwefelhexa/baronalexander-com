@@ -1,23 +1,21 @@
 import * as React from 'react';
-import { Link } from 'gatsby';
-
 import { Page } from '../components/Page';
-import { Container } from '../components/Container';
-import { IndexLayout } from '../layouts';
+import { Hero, HeroText, HeroSubtext } from '../components/designsystem/Hero';
+import { Link } from '../components/designsystem/Link';
 
-const NotFoundPage = () => (
-  <IndexLayout>
-    <Page>
-      <Container>
-        <h1>404: Page not found.</h1>
-        <p>
-          You've hit the void.
-          {' '}
-          <Link to="/">Go back.</Link>
-        </p>
-      </Container>
-    </Page>
-  </IndexLayout>
+const NotFoundPage: React.FC = () => (
+  <Page name="Not found!">
+    <Hero>
+      <HeroText>
+        Page not found!
+      </HeroText>
+      <HeroSubtext>
+        This page does not exist.
+        {' '}
+        <Link to="/">Go back?</Link>
+      </HeroSubtext>
+    </Hero>
+  </Page>
 );
 
 export default NotFoundPage;

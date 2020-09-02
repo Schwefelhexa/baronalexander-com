@@ -9,7 +9,14 @@ module.exports = {
     author: {
       name: 'Alexander Baron',
       url: 'https://baronalexander.com/',
-      email: 'me@baronalexander.com'
+      email: 'me@baronalexander.com',
+      work: {
+        description: 'Student',
+        place: {
+          name: 'Gymnasium Gerresheim',
+          page: 'https://gymnasium-gerresheim.de/'
+        },
+      },
     }
   },
   plugins: [
@@ -59,7 +66,7 @@ module.exports = {
         siteUrl: 'https://gatsby-starter-typescript-plus.netlify.com'
       }
     },
-    'gatsby-plugin-emotion',
+    'gatsby-plugin-sass',
     'gatsby-plugin-typescript',
     'gatsby-plugin-sharp',
     'gatsby-transformer-sharp',

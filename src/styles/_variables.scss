@@ -1,0 +1,19 @@
+// Make sure to keep _mixins up to date. This doesn't work automatically -.-
+$screens: (
+  sm: 640px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+);
+
+:root {
+  --clr-main: #000000;
+  --clr-main-txt: rgba(0, 0, 0, 0.85);
+  --clr-secondary: #ffffff;
+  --clr-error: #F84141;
+  --clr-success: #34D11A;
+
+  --font-display: Poppins;
+  --font-default: "Open Sans";
+  --font-weight-bold: 500;
+}

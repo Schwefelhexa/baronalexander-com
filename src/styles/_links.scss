@@ -1,0 +1,22 @@
+a {
+  text-decoration: none;
+}
+
+%deco {
+  text-decoration: underline;
+  text-decoration: underline 4px;
+}
+
+.link {
+  color: var(--clr-main);
+
+  &--stealthy {
+    text-decoration: none;
+  }
+
+  @extend %deco;
+
+  &:visited {
+    @extend %deco;
+  }
+}

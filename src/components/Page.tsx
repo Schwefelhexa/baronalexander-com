@@ -1,22 +1,44 @@
-import * as React from 'react';
-import styled from '@emotion/styled';
+import React from 'react';
+import Helmet from 'react-helmet';
+import { useStaticQuery, graphql } from 'gatsby';
 
-import { dimensions } from '../styles/variables';
-
-const StyledPage = styled.div`
-  display: block;
-  flex: 1;
-  position: relative;
-  padding: ${dimensions.containerPadding}rem;
-  margin-bottom: 3rem;
+const InfoQuery = graphql`
+query InfoQuery {
+  site {
+    siteMetadata {
+      title
+    }
+  }
+}
 `;
-
-interface PageProps {
-  className?: string
+interface InfoResponse {
+  site: {
+    siteMetadata: {
+      title: string;
+    }
+  }
 }
 
-export const Page: React.FC<PageProps> = ({ children, className }) => (
-  <StyledPage className={className}>
-    {children}
-  </StyledPage>
-);
+
+interface IProps {
+  name?: string;
+  children: React.ReactNode;
+}
+export const Page: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({
+  name, className, children, ...props
+}) => {
+  const info = useStaticQuery<InfoResponse>(InfoQuery);
+  const { title } = info.site.siteMetadata;
+
+  return (
+    <>
+      <Helmet title={`${title} ${name ? ` - ${name}` : ''}`} htmlAttributes={{ lang: 'en' }} />
+      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+      <div className="page-wrapper">
+        <div className={`page ${className ?? ''}`} {...props}>
+          {children}
+        </div>
+      </div>
+    </>
+  );
+};
