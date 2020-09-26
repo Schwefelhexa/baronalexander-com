@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const Home: React.FC = () => (
   <div className="w-screen h-screen flex justify-center items-center">

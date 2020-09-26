@@ -1,8 +1,8 @@
-import React from 'react'
-import { AppProps } from 'next/app'
-import Head from 'next/head'
+import React from 'react';
+import { AppProps } from 'next/app';
+import Head from 'next/head';
 
-import '../styles/tailwind.css'
+import '../styles/tailwind.css';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
   <div>
@@ -12,6 +12,6 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
     </Head>
     <Component {...pageProps} />
   </div>
-)
+);
 
-export default MyApp
+export default MyApp;
