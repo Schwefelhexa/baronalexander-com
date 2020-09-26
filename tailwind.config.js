@@ -5,7 +5,15 @@ module.exports = {
   },
   purge: ['src/**/*.tsx', 'src/**/*.ts'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Poppins', 'sans-serif'],
+      },
+    },
+    height: (theme) => ({
+      ...theme('width'),
+      screen: '100vh',
+    }),
   },
   variants: {},
   plugins: [],
