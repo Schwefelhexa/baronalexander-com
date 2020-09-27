@@ -26,7 +26,7 @@ const Home: React.FC = () => (
     >
       <div
         className="flex flex-col items-center h-full my-12
-        lg:absolute lg:left-0 lg:m-0 lg:flex-row lg:w-7/12 lg:px-16 lg:items-end lg:pb-16"
+        lg:absolute lg:left-0 lg:bottom-0 lg:h-auto lg:m-0 lg:flex-row lg:w-7/12 lg:px-16 lg:pb-16"
       >
         <div className="w-full mb-8 lg:mb-0 lg:mr-12">
           <CtaLink href="#">Blog</CtaLink>
