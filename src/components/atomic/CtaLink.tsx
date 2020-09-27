@@ -10,7 +10,7 @@ interface Props {
 const CtaLink: React.FC<Props> = ({ href, children, subtle = false }) => (
   <Link href={href}>
     <span
-      className={classNames('block w-full h-full text-center', {
+      className={classNames('block w-full h-full text-center cursor-pointer', {
         'text-white bg-green-400 rounded-lg shadow-lg py-2 lg:py-3': !subtle,
         'font-bold text-blue-600': subtle,
       })}
