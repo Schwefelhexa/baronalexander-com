@@ -15,7 +15,11 @@ const Home: React.FC = () => (
       <div className="lg:absolute lg:top-5/12 lg:left-7/12 lg:-ml-48">
         <LinkCard href="https://www.rwth-aachen.de/cms/~a/root/?lidx=1">
           Student @ <br />
-          <span className="font-bold text-blue-600">RWTH Aachen</span>
+          <span
+            className={`font-bold text-blue-600 ${LinkCard.animation} group-hover:text-white`}
+          >
+            RWTH Aachen
+          </span>
         </LinkCard>
       </div>
     </div>
