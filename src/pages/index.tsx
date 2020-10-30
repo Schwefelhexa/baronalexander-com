@@ -1,79 +1,50 @@
-import * as React from 'react';
-import { graphql } from 'gatsby';
-import { Page } from '../components/Page';
-import { ButtonGroup } from '../components/designsystem/Button';
-import { HeroText, Hero, HeroSubtext } from '../components/designsystem/Hero';
-import { Divtext } from '../components/designsystem/Divtext';
-import { Link, LinkButton } from '../components/designsystem/Link';
+import React from 'react';
 
-interface IIndexPageProps {
-  data: IndexPageQueryResponse;
-}
-const IndexPage: React.FC<IIndexPageProps> = ({ data }) => (
-  <Page className="homepage">
-    <Hero>
-      <HeroText>
-        {data.site.siteMetadata.author.name.split(' ').reduce<React.ReactNode[]>((all, word, i, arr) => (
-          [
-            ...all,
-            /* eslint-disable-next-line react/no-array-index-key */
-            <span key={i * 2}>{word}</span>,
-            /* eslint-disable-next-line react/no-array-index-key */
-            <br key={i + 1} />,
-          ]
-        ), []).slice(0, -1)}
-      </HeroText>
-      <HeroSubtext>
-        <Divtext>
-          <span>{data.site.siteMetadata.author.work.description}</span>
-          <span>@</span>
-          <span>
-            <Link to={data.site.siteMetadata.author.work.place.page} external>{data.site.siteMetadata.author.work.place.name}</Link>
+import CtaLink from '../components/atomic/CtaLink';
+import LinkCard from '../components/atomic/LinkCard';
+
+const Home: React.FC = () => (
+  <div className="h-screen flex flex-col lg:flex-row lg:items-stretch font-medium leading-tight relative">
+    <div
+      className="h-1/2 flex flex-col justify-between items-stretch bg-blue-700 pt-8 pb-10 px-8
+      lg:h-full lg:flex-grow-3 lg:px-16 lg:pt-12"
+    >
+      <h1 className="text-white font-medium text-6xl sm:text-7xl md:text-8xl md:leading-none xl:text-9xl">
+        Alexander <br /> Baron
+      </h1>
+      <div className="lg:absolute lg:top-5/12 lg:left-7/12 lg:-ml-48">
+        <LinkCard href="https://www.rwth-aachen.de/cms/~a/root/?lidx=1">
+          Student @ <br />
+          <span
+            className={`font-bold text-blue-600 ${LinkCard.animation} group-hover:text-white`}
+          >
+            RWTH Aachen
           </span>
-        </Divtext>
-      </HeroSubtext>
-    </Hero>
+        </LinkCard>
+      </div>
+    </div>
 
-    <ButtonGroup>
-      <LinkButton to="/projects" variant="secondary">Stuff I do</LinkButton>
-      <LinkButton to="/contact">Contact me</LinkButton>
-    </ButtonGroup>
-  </Page>
+    <div
+      className="flex flex-col items-stretch px-8 text-4xl
+      lg:items-center lg:justify-end lg:flex-grow-3"
+    >
+      <div
+        className="flex flex-col items-center h-full my-12
+        lg:absolute lg:left-0 lg:bottom-0 lg:h-auto lg:m-0 lg:flex-row lg:w-7/12 lg:px-16 lg:pb-16"
+      >
+        <div className="w-full mb-8 lg:mb-0 lg:mr-12">
+          <CtaLink href="#">Blog</CtaLink>
+        </div>
+        <div className="w-full">
+          <CtaLink href="#">About me</CtaLink>
+        </div>
+      </div>
+      <div className="mb-10 lg:w-full lg:mb-16 lg:py-3">
+        <CtaLink href="#" subtle>
+          Contact me
+        </CtaLink>
+      </div>
+    </div>
+  </div>
 );
-
-export default IndexPage;
-
-export const query = graphql`
-query IndexPageQuery {
-  site {
-    siteMetadata {
-      author {
-        name
-        work {
-          description
-          place {
-            name
-            page
-          }
-        }
-      }
-    }
-  }
-}
-`;
-interface IndexPageQueryResponse {
-  site: {
-    siteMetadata: {
-      author: {
-        name: string;
-        work: {
-          description: string;
-          place: {
-            name: string;
-            page: string;
-          }
-        }
-      }
-    }
-  }
-}
+export default Home;
