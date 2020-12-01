@@ -8,10 +8,6 @@ module.exports = {
       fontSize: {
         '6.5xl': ['4rem', 1],
       },
-      flexGrow: () =>
-        [...new Array(8)]
-          .map((_, i) => i)
-          .reduce((all, i) => ({ ...all, [i]: i }), {}),
     },
     height: (theme) => ({
       ...theme('width'),
