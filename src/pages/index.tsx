@@ -4,7 +4,7 @@ import CtaLink from '../components/atomic/CtaLink';
 import LinkCard from '../components/atomic/LinkCard';
 
 const Home: React.FC = () => (
-  <div className="h-screen flex flex-col lg:flex-row lg:items-stretch font-medium leading-tight relative">
+  <div className="h-full flex flex-col lg:flex-row lg:items-stretch font-medium leading-tight relative">
     <div
       className="h-1/2 flex flex-col justify-between items-stretch bg-blue-700 pt-8 pb-10 px-8
       lg:h-full lg:flex-grow-3 lg:px-16 lg:pt-12"
