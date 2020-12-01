@@ -6,10 +6,7 @@ module.exports = {
         sans: ['Poppins', 'sans-serif'],
       },
       fontSize: {
-        '7xl': '5rem',
-        '8xl': '6rem',
-        '9xl': '7rem',
-        '10xl': '9rem',
+        '6.5xl': ['4rem', 1],
       },
       flexGrow: () =>
         [...new Array(8)]
@@ -24,6 +21,15 @@ module.exports = {
       ...theme('width'),
       screen: undefined,
     }),
+    colors: {
+      primary: '#2F75C6',
+      'primary-light': '#498AD4',
+      'primary-dark': '#2762A5',
+      positive: '#45CB85',
+      'positive-light': '#70D7A1',
+      'positive-dark': '#36BF78',
+      light: '#FFFFFF',
+    },
   },
   variants: {
     textColor: ['responsive', 'hover', 'focus', 'group-hover'],

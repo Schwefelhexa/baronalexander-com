@@ -16,13 +16,16 @@ const CtaLink: React.FC<Props> = ({
 }) => (
   <Link href={href}>
     <span
-      className={classNames('block w-full h-full text-center cursor-pointer', {
-        'text-white bg-green-400 rounded-lg shadow-lg py-2 lg:py-3': !subtle,
-        'font-bold text-blue-600': subtle,
-        'transition-colors duration-100 ease-in-out': !noAnimation,
-        'hover:bg-green-500': !subtle && !noAnimation,
-        'hover:text-blue-700': subtle && !noAnimation,
-      })}
+      className={classNames(
+        'block w-full h-full text-center cursor-pointer leading-tight',
+        {
+          'text-light bg-positive rounded-lg shadow-lg py-2 lg:py-3': !subtle,
+          'font-bold text-primary': subtle,
+          'transition-colors duration-100 ease-in-out': !noAnimation,
+          'hover:bg-positive-dark': !subtle && !noAnimation,
+          'hover:text-primary-dark': subtle && !noAnimation,
+        }
+      )}
     >
       {children}
     </span>

@@ -6,20 +6,22 @@ import LinkCard from '../components/atomic/LinkCard';
 const Home: React.FC = () => (
   <div className="h-full flex flex-col lg:flex-row lg:items-stretch font-medium leading-tight relative">
     <div
-      className="h-1/2 flex flex-col justify-between items-stretch bg-blue-700 pt-8 pb-10 px-8
+      className="h-1/2 flex flex-col justify-between items-stretch bg-primary-dark pt-8 pb-10 px-8
       lg:h-full lg:flex-grow-3 lg:px-16 lg:pt-12"
     >
-      <h1 className="text-white font-medium text-6xl sm:text-7xl md:text-8xl md:leading-none xl:text-9xl">
+      <h1 className="text-light font-medium text-6.5xl sm:text-7xl md:text-8xl md:leading-none xl:text-9xl">
         Alexander <br /> Baron
       </h1>
       <div className="lg:absolute lg:top-5/12 lg:left-7/12 lg:-ml-48">
         <LinkCard href="https://www.rwth-aachen.de/cms/~a/root/?lidx=1">
-          Student @ <br />
-          <span
-            className={`font-bold text-blue-600 ${LinkCard.animation} group-hover:text-white`}
-          >
-            RWTH Aachen
-          </span>
+          <p className="leading-tight">
+            Student @ <br />
+            <span
+              className={`font-bold align-middle text-primary ${LinkCard.animation} group-hover:text-light`}
+            >
+              RWTH Aachen
+            </span>
+          </p>
         </LinkCard>
       </div>
     </div>
