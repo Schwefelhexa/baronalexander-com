@@ -22,9 +22,9 @@ const CtaLink: React.FC<Props> = ({
           'text-light bg-positive rounded-lg shadow-lg py-2 lg:py-3': !subtle,
           'font-bold text-primary': subtle,
           'transition-colors duration-100 ease-in-out': !noAnimation,
-          'hover:bg-positive-dark focus:bg-positive-dark':
+          'hover:bg-positive-darker focus:bg-positive-darker':
             !subtle && !noAnimation,
-          'hover:text-primary-dark focus:text-primary-dark':
+          'hover:text-primary-darker focus:text-primary-darker':
             subtle && !noAnimation,
         }
       )}
