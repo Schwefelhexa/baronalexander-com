@@ -15,20 +15,22 @@ const CtaLink: React.FC<Props> = ({
   noAnimation = false,
 }) => (
   <Link href={href}>
-    <span
+    <a
       className={classNames(
-        'block w-full h-full text-center cursor-pointer leading-tight',
+        'block w-full h-full text-center cursor-pointer leading-tight outline-none',
         {
           'text-light bg-positive rounded-lg shadow-lg py-2 lg:py-3': !subtle,
           'font-bold text-primary': subtle,
           'transition-colors duration-100 ease-in-out': !noAnimation,
-          'hover:bg-positive-dark': !subtle && !noAnimation,
-          'hover:text-primary-dark': subtle && !noAnimation,
+          'hover:bg-positive-dark focus:bg-positive-dark':
+            !subtle && !noAnimation,
+          'hover:text-primary-dark focus:text-primary-dark':
+            subtle && !noAnimation,
         }
       )}
     >
       {children}
-    </span>
+    </a>
   </Link>
 );
 export default CtaLink;

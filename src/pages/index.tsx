@@ -15,10 +15,10 @@ const Home: React.FC = () => (
         </Header>
         <div className="lg:absolute lg:top-5/12 lg:left-7/12 lg:-ml-48">
           <LinkCard href="https://www.rwth-aachen.de/cms/~a/root/?lidx=1">
-            <p className="leading-tight">
+            <p className="leading-tight group-hover:text-light group-focus:text-light">
               Student @ <br />
               <span
-                className={`font-bold align-middle text-primary ${LinkCard.animation} group-hover:text-light`}
+                className={`font-bold align-middle text-primary group-hover:text-light group-focus:text-light ${LinkCard.animation}`}
               >
                 RWTH Aachen
               </span>
