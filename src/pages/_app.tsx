@@ -8,6 +8,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
   <>
     <Head>
       <title>Alexander Baron</title>
+      <meta name="description" content="Alexander Baron's Website" />
       <link rel="icon" href="/favicon.ico" />
     </Head>
     <Component {...pageProps} />
