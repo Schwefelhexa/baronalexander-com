@@ -29,7 +29,7 @@ const Home: React.FC = () => (
       <ResponsiveSplit.Element className="flex flex-col items-stretch px-8 text-4xl lg:items-center lg:justify-end lg:flex-grow">
         <div className="flex flex-col items-center h-full my-12 lg:absolute lg:left-0 lg:bottom-0 lg:h-auto lg:m-0 lg:flex-row lg:w-7/12 lg:px-16 lg:pb-16">
           <div className="w-full mb-8 lg:mb-0 lg:mr-12">
-            <CtaLink href="#">Blog</CtaLink>
+            <CtaLink href="/projects">Projects</CtaLink>
           </div>
           <div className="w-full">
             <CtaLink href="#">About me</CtaLink>
