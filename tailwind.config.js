@@ -8,6 +8,9 @@ module.exports = {
       fontSize: {
         '6.5xl': ['4rem', 1],
       },
+      maxHeight: {
+        128: '32rem',
+      },
     },
     height: (theme) => ({
       ...theme('width'),

@@ -54,7 +54,11 @@ const renderCollection: RenderCollection = {
     if (!asset) return null;
     return (
       <div key={key} className="mb-8 mt-8 flex flex-col items-center">
-        <img src={asset.url} alt={asset.description} className="md:mb-1" />
+        <img
+          src={asset.url}
+          alt={asset.description}
+          className="md:mb-1 max-h-128"
+        />
         {asset.description && (
           <span className="text-sm md:text-base max-w-full px-12 whitespace-nowrap overflow-hidden overflow-ellipsis">
             {asset.description}
