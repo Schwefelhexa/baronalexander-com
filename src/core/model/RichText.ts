@@ -1,6 +1,11 @@
 import RichText from '../../components/RichText';
 
-export type NodeType = 'document' | 'paragraph' | 'text' | 'hyperlink';
+export type NodeType =
+  | 'document'
+  | 'paragraph'
+  | 'text'
+  | 'hyperlink'
+  | 'embedded-asset-block';
 
 interface Node<TType extends NodeType> {
   nodeType: TType;
@@ -21,9 +26,22 @@ interface Paragraph extends Node<'paragraph'> {
   content: (Text | Hyperlink)[];
 }
 
+interface EmbeddedAssetBlock extends Node<'embedded-asset-block'> {
+  content: [];
+  data: {
+    target: {
+      sys: {
+        id: string;
+        type: 'Link';
+        linkType: 'Asset';
+      };
+    };
+  };
+}
+
 interface RichText extends Node<'document'> {
   data: {};
-  content: Paragraph[];
+  content: (Paragraph | EmbeddedAssetBlock)[];
 }
 
 export default RichText;
@@ -33,4 +51,5 @@ export type NodeTypes = {
   hyperlink: Hyperlink;
   paragraph: Paragraph;
   document: RichText;
+  'embedded-asset-block': EmbeddedAssetBlock;
 };

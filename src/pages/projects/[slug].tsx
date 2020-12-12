@@ -4,8 +4,9 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import Page from '../../components/layout/Page';
-import RichText from '../../components/RichText';
+import RichText, { Assets } from '../../components/RichText';
 import client from '../../core/graphql';
+import Asset from '../../core/model/Asset';
 import RichTextType from '../../core/model/RichText';
 import { Always } from '../../core/typeutil';
 import {
@@ -25,10 +26,27 @@ interface Props {
 const ProjectPage: React.FC<Props> = ({ project }) => {
   const { isFallback } = useRouter();
   if (isFallback) return null;
+
+  const assets: Assets = project
+    .description!.links.assets.block.map(
+      (value) =>
+        ({
+          id: value!.sys.id,
+          description: value!.description,
+          title: value!.title,
+          url: value!.url,
+          width: value!.width,
+          height: value!.height,
+        } as Asset)
+    )
+    .reduce((all, current) => ({ ...all, [current.id]: current }), {});
   return (
     <Page>
       <h1 className="text-primary text-5xl md:text-6xl mb-6">{project.name}</h1>
-      <RichText text={project.description?.json as RichTextType} />
+      <RichText
+        text={project.description?.json as RichTextType}
+        assets={assets}
+      />
     </Page>
   );
 };
@@ -41,6 +59,20 @@ const PROJECT_QUERY = gql`
         name
         description {
           json
+          links {
+            assets {
+              block {
+                sys {
+                  id
+                }
+                title
+                description
+                url
+                width
+                height
+              }
+            }
+          }
         }
         demo
         techStackCollection {
