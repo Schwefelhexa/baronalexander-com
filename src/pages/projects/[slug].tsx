@@ -4,7 +4,9 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import Page from '../../components/layout/Page';
+import RichText from '../../components/RichText';
 import client from '../../core/graphql';
+import RichTextType from '../../core/model/RichText';
 import { Always } from '../../core/typeutil';
 import {
   ProjectQuery,
@@ -25,7 +27,8 @@ const ProjectPage: React.FC<Props> = ({ project }) => {
   if (isFallback) return null;
   return (
     <Page>
-      <h1>{project.name}</h1>
+      <h1 className="text-primary text-5xl md:text-6xl mb-6">{project.name}</h1>
+      <RichText text={project.description?.json as RichTextType} />
     </Page>
   );
 };

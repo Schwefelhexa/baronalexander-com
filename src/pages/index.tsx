@@ -7,7 +7,7 @@ import Page from '../components/layout/Page';
 import ResponsiveSplit from '../components/layout/ResponsiveSplit';
 
 const Home: React.FC = () => (
-  <Page>
+  <Page noPadding>
     <ResponsiveSplit>
       <ResponsiveSplit.Element className="h-1/2 flex flex-col justify-between items-stretch bg-primary-dark pt-8 pb-10 px-8 lg:h-full lg:flex-grow lg:px-16 lg:pt-12">
         <Header light>
