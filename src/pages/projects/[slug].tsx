@@ -1,7 +1,8 @@
 import { gql } from '@apollo/client';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/router';
 import React from 'react';
+
 import Page from '../../components/layout/Page';
 import client from '../../core/graphql';
 import { Always } from '../../core/typeutil';
