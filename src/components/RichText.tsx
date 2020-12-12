@@ -6,7 +6,7 @@ import Asset from '../core/model/Asset';
 export type Assets = { [id: string]: Asset };
 type RenderCollection = { [type in NodeType]: RenderFunction<type> };
 type RenderFunction<TType extends NodeType> = (params: {
-  key: string;
+  key?: string;
   data: NodeTypes[TType];
   collection: RenderCollection;
   assets: Assets;
@@ -49,16 +49,18 @@ const renderCollection: RenderCollection = {
     </Link>
   ),
   text: ({ key, data }) => <span key={key}>{data.value}</span>,
-  'embedded-asset-block': ({ key, data, assets }) => {
+  'embedded-asset-block': ({ key, data, assets, collection }) => {
     const asset = assets[data.data.target.sys.id];
     if (!asset) return null;
     return (
-      <img
-        className="mb-8 mt-8"
-        key={key}
-        src={asset.url}
-        alt={asset.description}
-      />
+      <div key={key} className="mb-8 mt-8 flex flex-col items-center">
+        <img src={asset.url} alt={asset.description} className="md:mb-1" />
+        {asset.description && (
+          <span className="text-sm md:text-base max-w-full px-12 whitespace-nowrap overflow-hidden overflow-ellipsis">
+            {asset.description}
+          </span>
+        )}
+      </div>
     );
   },
 };
