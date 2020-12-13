@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const usePreview = (
   initial?: boolean
@@ -19,6 +19,7 @@ const usePreview = (
     })
       .then((res) => res.json())
       .then(({ preview }: { preview: boolean }) => _setPreview(preview));
-  return [preview, setPreview];
+
+  return [preview, useCallback(setPreview, [])];
 };
 export default usePreview;

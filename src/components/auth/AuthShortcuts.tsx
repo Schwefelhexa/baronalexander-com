@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
+import usePreview from '../../core/hooks/usePreview';
 
 const AuthShortcuts: React.FC = () => {
   const [session, loading] = useSession();
+  const [preview, setPreview] = usePreview();
   const router = useRouter();
 
   useEffect(() => {
@@ -19,10 +21,14 @@ const AuthShortcuts: React.FC = () => {
           else router.push('/auth');
         } else signIn('google');
       }
+      if (e.key === 'P') {
+        setPreview(!preview);
+      }
     };
+
     window.addEventListener('keyup', listener);
     return () => window.removeEventListener('keyup', listener);
-  }, [session, loading, router]);
+  }, [session, loading, router, preview, setPreview]);
 
   return null;
 };
