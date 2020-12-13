@@ -17,7 +17,8 @@ const AuthShortcuts: React.FC = () => {
 
       if (e.key === 'L') {
         if (session) {
-          if (router.pathname === '/auth') signOut();
+          if (router.pathname === '/auth')
+            setPreview(false).then(() => signOut());
           else router.push('/auth');
         } else signIn('google');
       }
