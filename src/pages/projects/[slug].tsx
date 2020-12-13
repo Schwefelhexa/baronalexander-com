@@ -68,8 +68,8 @@ const ProjectPage: React.FC<Props> = ({ project }) => {
 export default ProjectPage;
 
 const PROJECT_QUERY = gql`
-  query Project($slug: String!) {
-    projectCollection(where: { slug: $slug }, limit: 1) {
+  query Project($slug: String!, $preview: Boolean!) {
+    projectCollection(where: { slug: $slug }, limit: 1, preview: $preview) {
       items {
         name
         description {
@@ -106,7 +106,10 @@ const PROJECT_QUERY = gql`
     }
   }
 `;
-export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
+export const getStaticProps: GetStaticProps<Props> = async ({
+  params,
+  preview,
+}) => {
   const { data, errors } = await client.query<
     ProjectQuery,
     ProjectQueryVariables
@@ -114,6 +117,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     query: PROJECT_QUERY,
     variables: {
       slug: params!.slug as string,
+      preview: preview ?? false,
     },
   });
   if (errors) console.error(errors);

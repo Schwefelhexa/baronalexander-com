@@ -17,15 +17,15 @@ const ProjectPage: React.FC<Props> = ({ projects }) => (
     <h1 className="text-primary text-5xl md:text-6xl mb-6">Projects</h1>
     <ul>
       {projects?.items.map((project) => (
-        <li key={project!.slug!} className="block mt-4 md:mt-12">
-          <Link href={`/projects/${project!.slug!}`}>
+        <li key={project?.slug} className="block mt-4 md:mt-12">
+          <Link href={`/projects/${project?.slug}`}>
             <a className="flex flex-col group border-4 border-light hover:border-primary focus:border-primary outline-none transition-colors">
               <div className="pb-1 group-focus:bg-primary group-hover:bg-primary transition-colors">
                 <span className="text-primary group-focus:text-light group-hover:text-light text-2xl md:text-4xl transition-colors">
                   {project?.name}
                 </span>
               </div>
-              <img src={project!.coverImage!.url!} aria-hidden="true" />
+              <img src={project?.coverImage?.url} aria-hidden="true" />
             </a>
           </Link>
         </li>
@@ -36,8 +36,8 @@ const ProjectPage: React.FC<Props> = ({ projects }) => (
 export default ProjectPage;
 
 const query = gql`
-  query ProjectsList {
-    projectCollection(limit: 500) {
+  query ProjectsList($preview: Boolean!) {
+    projectCollection(limit: 500, preview: $preview) {
       items {
         name
         slug
@@ -48,11 +48,11 @@ const query = gql`
     }
   }
 `;
-export const getStaticProps: GetStaticProps<Props> = async () => {
+export const getStaticProps: GetStaticProps<Props> = async ({ preview }) => {
   const { data } = await client.query<
     ProjectsListQuery,
     ProjectsListQueryVariables
-  >({ query });
+  >({ query, variables: { preview: preview ?? false } });
 
   return { props: { projects: data.projectCollection }, revalidate: 1 };
 };
