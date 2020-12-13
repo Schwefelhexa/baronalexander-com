@@ -8,9 +8,18 @@ const preview = async (req: NextApiRequest, res: NextApiResponse) => {
     return;
   }
 
-  if (req.query.enable === 'true') res.setPreviewData({});
-  else res.clearPreviewData();
+  switch (req.method) {
+    case 'GET':
+      res.status(200).send({ preview: req.preview, data: req.previewData });
+      break;
 
-  res.status(200).send(null);
+    case 'POST':
+      const enable = req.body.enable === true;
+      if (enable) res.setPreviewData({});
+      else res.clearPreviewData();
+
+      res.status(200).send({ preview: enable });
+      break;
+  }
 };
 export default preview;
