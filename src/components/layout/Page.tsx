@@ -8,7 +8,7 @@ interface Props {
 const Page: React.FC<Props> = ({ children, noPadding = false }) => (
   <div
     className={classNames('h-full font-medium leading-tight', {
-      'px-8 py-7 lg:mx-auto lg:py-12 lg:w-2/3': !noPadding,
+      'px-8 py-7 lg:mx-auto lg:py-12 lg:w-2/3 max-w-5xl': !noPadding,
     })}
   >
     {children}

@@ -14,12 +14,19 @@ interface Props {
 }
 const ProjectPage: React.FC<Props> = ({ projects }) => (
   <Page>
-    <h1>Projects</h1>
+    <h1 className="text-primary text-5xl md:text-6xl mb-6">Projects</h1>
     <ul>
       {projects?.items.map((project) => (
-        <li key={project!.slug!}>
+        <li key={project!.slug!} className="block mt-4 md:mt-12">
           <Link href={`/projects/${project!.slug!}`}>
-            <a>{project?.name}</a>
+            <a className="flex flex-col">
+              <div className="mb-1">
+                <span className="text-primary text-2xl md:text-4xl">
+                  {project?.name}
+                </span>
+              </div>
+              <img src={project!.coverImage!.url!} aria-hidden="true" />
+            </a>
           </Link>
         </li>
       ))}
@@ -34,6 +41,9 @@ const query = gql`
       items {
         name
         slug
+        coverImage {
+          url
+        }
       }
     }
   }
