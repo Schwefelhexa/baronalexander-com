@@ -16,30 +16,28 @@ const ProjectPage: React.FC<Props> = ({ projects }) => (
   <Page>
     <h1 className="text-primary text-5xl md:text-6xl mb-6">Projects</h1>
     <ul>
-      {projects?.items
-        .map((p) => ({ ...p, preview: p?.sys.publishedAt === null }))
-        .map((project) => (
-          <li key={project?.slug} className="block mt-4 md:mt-12">
-            <Link href={`/projects/${project?.slug}`}>
-              <a className="flex flex-col group border-4 border-light hover:border-primary focus:border-primary outline-none transition-colors">
-                <div className="pb-1 group-focus:bg-primary group-hover:bg-primary transition-colors">
-                  <span className="text-primary group-focus:text-light group-hover:text-light text-2xl md:text-4xl transition-colors">
-                    {project?.name ?? 'UNNAMED PROJECT'}{' '}
-                    {project.preview && (
-                      <span className="text-positive">- PREVIEW</span>
-                    )}
-                  </span>
-                </div>
-                <img
-                  src={
-                    project?.coverImage?.url ?? 'https://picsum.photos/960/540'
-                  }
-                  aria-hidden="true"
-                />
-              </a>
-            </Link>
-          </li>
-        ))}
+      {projects?.items.map((project) => (
+        <li key={project?.slug} className="block mt-4 md:mt-12">
+          <Link href={`/projects/${project?.slug}`}>
+            <a className="flex flex-col group border-4 border-light hover:border-primary focus:border-primary outline-none transition-colors">
+              <div className="pb-1 group-focus:bg-primary group-hover:bg-primary transition-colors">
+                <span className="text-primary group-focus:text-light group-hover:text-light text-2xl md:text-4xl transition-colors">
+                  {project?.name ?? 'UNNAMED PROJECT'}{' '}
+                  {project?.sys.publishedAt !== null && (
+                    <span className="text-positive">- PREVIEW</span>
+                  )}
+                </span>
+              </div>
+              <img
+                src={
+                  project?.coverImage?.url ?? 'https://picsum.photos/960/540'
+                }
+                aria-hidden="true"
+              />
+            </a>
+          </Link>
+        </li>
+      ))}
     </ul>
   </Page>
 );
