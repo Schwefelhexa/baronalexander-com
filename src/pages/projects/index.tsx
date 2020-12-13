@@ -19,9 +19,9 @@ const ProjectPage: React.FC<Props> = ({ projects }) => (
       {projects?.items.map((project) => (
         <li key={project!.slug!} className="block mt-4 md:mt-12">
           <Link href={`/projects/${project!.slug!}`}>
-            <a className="flex flex-col">
-              <div className="mb-1">
-                <span className="text-primary text-2xl md:text-4xl">
+            <a className="flex flex-col group border-4 border-light hover:border-primary focus:border-primary outline-none transition-colors">
+              <div className="pb-1 group-focus:bg-primary group-hover:bg-primary transition-colors">
+                <span className="text-primary group-focus:text-light group-hover:text-light text-2xl md:text-4xl transition-colors">
                   {project?.name}
                 </span>
               </div>
