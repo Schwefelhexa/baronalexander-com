@@ -1,9 +1,10 @@
 import React from 'react';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
+import { Provider } from 'next-auth/client';
 
 import '../styles/tailwind.css';
-import { Provider } from 'next-auth/client';
+import AuthShortcuts from '../components/auth/AuthShortcuts';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
   <>
@@ -19,6 +20,7 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
     </Head>
     <Provider session={pageProps.session}>
       <Component {...pageProps} />
+      <AuthShortcuts />
     </Provider>
   </>
 );
