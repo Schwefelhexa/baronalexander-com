@@ -54,5 +54,5 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     ProjectsListQueryVariables
   >({ query });
 
-  return { props: { projects: data.projectCollection } };
+  return { props: { projects: data.projectCollection }, revalidate: 1 };
 };

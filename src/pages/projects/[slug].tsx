@@ -119,7 +119,10 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
   if (errors) console.error(errors);
   if (data.projectCollection?.items.length === 0) return { notFound: true };
 
-  return { props: { project: data.projectCollection?.items[0]! } };
+  return {
+    props: { project: data.projectCollection?.items[0]! },
+    revalidate: 1,
+  };
 };
 
 const SLUGS_QUERY = gql`
