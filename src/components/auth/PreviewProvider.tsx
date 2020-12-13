@@ -14,8 +14,12 @@ const PreviewProvider: React.FC = ({ children }) => {
   // Fetch current state
   useEffect(() => {
     fetch('/api/auth/preview')
-      .then((res) => res.json())
-      .then(({ preview }: { preview: boolean }) => _setPreview(preview));
+      .then((res) => {
+        if (!res.ok) throw new Error();
+        return res.json();
+      })
+      .then(({ preview }: { preview: boolean }) => _setPreview(preview))
+      .catch(() => _setPreview(false));
   }, [_setPreview]);
 
   const setPreview = useCallback(
