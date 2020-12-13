@@ -47,11 +47,11 @@ const ProjectPage: React.FC<Props> = ({ project }) => {
         text={project.description?.json as RichTextType}
         assets={assets}
       />
-      {project.techStackCollection?.items.length && (
+      {(project.techStackCollection?.items.length ?? 0) > 0 && (
         <div className="mt-16">
           <h2 className="text-primary text-2xl">Built with...</h2>
           <div className="flex flex-row flex-wrap overflow-x-hidden">
-            {project.techStackCollection.items.map((stack) => (
+            {project.techStackCollection?.items.map((stack) => (
               <div
                 key={stack?.sys.id}
                 className="bg-primary text-light px-4 py-1.5 mt-1 mr-2"
