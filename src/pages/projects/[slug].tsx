@@ -22,8 +22,9 @@ type Project = Always<
 
 interface Props {
   project: Project;
+  preview: boolean;
 }
-const ProjectPage: React.FC<Props> = ({ project }) => {
+const ProjectPage: React.FC<Props> = ({ project, preview }) => {
   const { isFallback } = useRouter();
   if (isFallback) return null;
 
@@ -42,7 +43,10 @@ const ProjectPage: React.FC<Props> = ({ project }) => {
     .reduce((all, current) => ({ ...all, [current.id]: current }), {});
   return (
     <Page>
-      <h1 className="text-primary text-5xl md:text-6xl mb-6">{project.name}</h1>
+      <h1 className="text-primary text-5xl md:text-6xl mb-6">
+        {project.name}{' '}
+        {preview && <span className="text-positive"> - PREVIEW</span>}
+      </h1>
       <RichText
         text={project.description?.json as RichTextType}
         assets={assets}
@@ -110,6 +114,8 @@ export const getStaticProps: GetStaticProps<Props> = async ({
   params,
   preview,
 }) => {
+  const isPreview = preview ?? false;
+
   const { data, errors } = await client.query<
     ProjectQuery,
     ProjectQueryVariables
@@ -117,14 +123,14 @@ export const getStaticProps: GetStaticProps<Props> = async ({
     query: PROJECT_QUERY,
     variables: {
       slug: params!.slug as string,
-      preview: preview ?? false,
+      preview: isPreview,
     },
   });
   if (errors) console.error(errors);
   if (data.projectCollection?.items.length === 0) return { notFound: true };
 
   return {
-    props: { project: data.projectCollection?.items[0]! },
+    props: { project: data.projectCollection?.items[0]!, preview: isPreview },
     revalidate: 1,
   };
 };
