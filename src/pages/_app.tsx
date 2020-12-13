@@ -3,6 +3,7 @@ import { AppProps } from 'next/app';
 import Head from 'next/head';
 
 import '../styles/tailwind.css';
+import { Provider } from 'next-auth/client';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
   <>
@@ -16,7 +17,9 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
         as="style"
       />
     </Head>
-    <Component {...pageProps} />
+    <Provider session={pageProps.session}>
+      <Component {...pageProps} />
+    </Provider>
   </>
 );
 
