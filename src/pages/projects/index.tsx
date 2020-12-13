@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 import Link from 'next/link';
 import React from 'react';
 import Page from '../../components/layout/Page';
@@ -48,7 +48,7 @@ const query = gql`
     }
   }
 `;
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
+export const getStaticProps: GetStaticProps<Props> = async () => {
   const { data } = await client.query<
     ProjectsListQuery,
     ProjectsListQueryVariables
