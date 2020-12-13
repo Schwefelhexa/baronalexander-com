@@ -1,25 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { previewContext } from '../../components/auth/PreviewProvider';
 
-const usePreview = (
-  initial?: boolean
-): [boolean, (preview: boolean) => Promise<void>] => {
-  const [preview, _setPreview] = useState(initial ?? false);
+const usePreview = (): [boolean, (preview: boolean) => Promise<boolean>] => {
+  const { preview, setPreview } = useContext(previewContext);
 
-  useEffect(() => {
-    fetch('/api/auth/preview')
-      .then((res) => res.json())
-      .then(({ preview }: { preview: boolean }) => _setPreview(preview));
-  }, [_setPreview]);
-
-  const setPreview = (preview: boolean) =>
-    fetch('/api/auth/preview', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ enable: preview }),
-    })
-      .then((res) => res.json())
-      .then(({ preview }: { preview: boolean }) => _setPreview(preview));
-
-  return [preview, useCallback(setPreview, [])];
+  return [preview, setPreview];
 };
 export default usePreview;

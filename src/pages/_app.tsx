@@ -5,6 +5,7 @@ import { Provider } from 'next-auth/client';
 
 import '../styles/tailwind.css';
 import AuthShortcuts from '../components/auth/AuthShortcuts';
+import PreviewProvider from '../components/auth/PreviewProvider';
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
   <>
@@ -19,8 +20,10 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
       />
     </Head>
     <Provider session={pageProps.session}>
-      <Component {...pageProps} />
-      <AuthShortcuts />
+      <PreviewProvider>
+        <Component {...pageProps} />
+        <AuthShortcuts />
+      </PreviewProvider>
     </Provider>
   </>
 );
