@@ -22,7 +22,7 @@ const AuthShortcuts: React.FC = () => {
         } else signIn('google');
       }
       if (e.key === 'P') {
-        setPreview(!preview);
+        setPreview(!preview).then(() => router.reload());
       }
     };
 
