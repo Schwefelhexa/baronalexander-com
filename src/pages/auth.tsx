@@ -5,11 +5,8 @@ import { getSession, signOut } from 'next-auth/client';
 import Page from '../components/layout/Page';
 import usePreview from '../core/hooks/usePreview';
 
-interface Props {
-  preview: boolean;
-}
-const AuthPage: React.FC<Props> = (inital) => {
-  const [preview, setPreview] = usePreview(inital.preview);
+const AuthPage: React.FC = () => {
+  const [preview, setPreview] = usePreview();
 
   // I know this looks disgusting, but I'ts internal so I don't care right now
   return (
@@ -28,7 +25,7 @@ const AuthPage: React.FC<Props> = (inital) => {
 };
 export default AuthPage;
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({
+export const getServerSideProps: GetServerSideProps = async ({
   req,
   preview,
 }) => {
@@ -42,5 +39,5 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     };
   }
 
-  return { props: { preview: preview ?? false } };
+  return { props: {} };
 };
