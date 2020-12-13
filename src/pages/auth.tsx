@@ -3,17 +3,13 @@ import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import { getSession, signOut } from 'next-auth/client';
 import Page from '../components/layout/Page';
+import usePreview from '../core/hooks/usePreview';
 
 interface Props {
   preview: boolean;
 }
 const AuthPage: React.FC<Props> = (inital) => {
-  const [preview, _setPreview] = useState(inital.preview);
-
-  const setPreview = (preview: boolean) =>
-    fetch(`/api/auth/preview?enable=${preview}`).then(() =>
-      _setPreview(preview)
-    );
+  const [preview, setPreview] = usePreview(inital.preview);
 
   // I know this looks disgusting, but I'ts internal so I don't care right now
   return (
