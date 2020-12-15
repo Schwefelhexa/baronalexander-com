@@ -23,7 +23,7 @@ const ProjectPage: React.FC<Props> = ({ projects }) => (
               <div className="pb-1 group-focus:bg-primary group-hover:bg-primary transition-colors">
                 <span className="text-primary group-focus:text-light group-hover:text-light text-2xl md:text-4xl transition-colors">
                   {project?.name ?? 'UNNAMED PROJECT'}{' '}
-                  {project?.sys.publishedAt !== null && (
+                  {project?.sys.publishedAt === null && (
                     <span className="text-positive">- PREVIEW</span>
                   )}
                 </span>
