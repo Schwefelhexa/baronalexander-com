@@ -1,25 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { gql, GraphQLClient } from 'graphql-request';
 import { GetStaticProps } from 'next';
 import Page from '../components/layout/Page';
 import { useSession } from 'next-auth/client';
+import { usePreviewMode } from '../core/preview';
 
 interface Props {
   data: any;
-  preview: boolean;
 }
-const IndexPage: React.FC<Props> = ({ data, preview }) => {
+const IndexPage: React.FC<Props> = ({ data }) => {
   const [session, loading] = useSession();
-  const [isPreview, setIsPreview] = useState(preview);
-
-  const setPreviewMode = (preview: boolean) =>
-    fetch('/api/auth/preview', {
-      method: 'POST',
-      body: JSON.stringify({ enable: preview }),
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((res) => res.json())
-      .then(({ preview }) => setIsPreview(preview));
+  const [isPreview, setPreviewMode] = usePreviewMode();
 
   return (
     <Page
@@ -60,5 +51,5 @@ export const getStaticProps: GetStaticProps<Props> = async ({ preview }) => {
   });
   const data = await client.request(QUERY);
 
-  return { props: { data, preview: preview ?? false } };
+  return { props: { data } };
 };
