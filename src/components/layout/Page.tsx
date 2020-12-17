@@ -20,7 +20,7 @@ const Page: React.FC<PageProps> = ({
         <PreviewIndicator preview={preview} setPreview={setPreview} />
       </div>
     )}
-    <main className="w-full h-full">{children}</main>
+    <main className="w-full h-full px-32 py-16">{children}</main>
   </div>
 );
 export default Page;
