@@ -8,13 +8,10 @@ import Page from '../components/layout/Page';
 import { usePreviewMode } from '../core/preview';
 import Header from '../components/atomic/Header';
 import ProjectHero from '../components/feature/projects/ProjectHero';
+import { IndexPageQuery, IndexPageQueryVariables } from '../generated/graphql';
 
 interface IndexPageProps {
-  project: {
-    title: string;
-    techStack: { title: string }[];
-    heroImage: { responsiveImage: ResponsiveImageType };
-  };
+  project: IndexPageQuery['project'];
 }
 const IndexPage: React.FC<IndexPageProps> = ({ project }) => {
   const [session, loading] = useSession();
@@ -30,11 +27,13 @@ const IndexPage: React.FC<IndexPageProps> = ({ project }) => {
         <div className="mb-16">
           <Header>Alexander Baron.</Header>
         </div>
-        {project !== null && (
+        {!!project && (
           <ProjectHero
-            title={project.title}
-            techStack={project.techStack.map(({ title }) => title)}
-            image={project.heroImage.responsiveImage}
+            title={project.title ?? 'NO TITLE'}
+            techStack={project.techStack.map(
+              ({ title }) => title ?? 'NO TITLE'
+            )}
+            image={project.heroImage!.responsiveImage as ResponsiveImageType}
           />
         )}
       </div>
@@ -51,6 +50,7 @@ const QUERY = gql`
       techStack {
         title
       }
+      createdAt
       heroImage {
         responsiveImage(
           imgixParams: { fit: crop, w: 1680, h: 720, auto: format }
@@ -81,7 +81,14 @@ export const getStaticProps: GetStaticProps<IndexPageProps> = async ({
       authorization: `Bearer ${process.env.DATOCMS_API_TOKEN}`,
     },
   });
-  const { project } = await client.request(QUERY);
+  const { project } = await client.request<
+    IndexPageQuery,
+    IndexPageQueryVariables
+  >(QUERY);
 
-  return { props: { project } };
+  return {
+    props: {
+      project,
+    },
+  };
 };
