@@ -20,6 +20,7 @@ export const usePreviewMode = (): [
     setLoading(true);
     setPreviewMode(preview)
       .then(() => setPreview(preview))
+      .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
 
