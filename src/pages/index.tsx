@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSession } from 'next-auth/client';
-import { GraphQLClient, gql } from 'graphql-request';
+import { gql } from 'graphql-request';
 import { GetStaticProps } from 'next';
 import { ResponsiveImageType } from 'react-datocms';
 
@@ -9,6 +9,7 @@ import { usePreviewMode } from '../core/preview';
 import Header from '../components/atomic/Header';
 import ProjectHero from '../components/feature/projects/ProjectHero';
 import { IndexPageQuery, IndexPageQueryVariables } from '../generated/graphql';
+import { queryCMS } from '../core/cms';
 
 interface IndexPageProps {
   project: IndexPageQuery['project'];
@@ -73,18 +74,10 @@ const QUERY = gql`
 export const getStaticProps: GetStaticProps<IndexPageProps> = async ({
   preview,
 }) => {
-  const endpoint = preview
-    ? `https://graphql.datocms.com/preview`
-    : `https://graphql.datocms.com/`;
-  const client = new GraphQLClient(endpoint, {
-    headers: {
-      authorization: `Bearer ${process.env.DATOCMS_API_TOKEN}`,
-    },
-  });
-  const { project } = await client.request<
-    IndexPageQuery,
-    IndexPageQueryVariables
-  >(QUERY);
+  const { project } = await queryCMS<IndexPageQuery, IndexPageQueryVariables>(
+    QUERY,
+    preview
+  );
 
   return {
     props: {
