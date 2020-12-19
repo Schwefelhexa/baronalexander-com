@@ -45,8 +45,6 @@ export const PageHero: React.FC<PageHeroProps> = ({
 }) => {
   const { heroContainer, setPadding } = useContext(PageContext);
 
-  console.log({ padding });
-
   useEffect(() => {
     setPadding(padding);
 
