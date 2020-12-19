@@ -9,6 +9,7 @@ import Header from '../../components/atomic/Header';
 import Page, { PageHero } from '../../components/layout/Page';
 import { queryCMS } from '../../core/cms';
 import { usePreviewMode } from '../../core/preview';
+import Text from '../../components/atomic/Text';
 import {
   PathsQuery,
   PathsQueryVariables,
@@ -44,6 +45,11 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ project }) => {
         />
       </PageHero>
       <Header>{project.title}</Header>
+      {project.techStack.length > 0 && (
+        <Text>
+          Built with: {project.techStack.map((stack) => stack.title).join(', ')}
+        </Text>
+      )}
     </Page>
   );
 };
