@@ -6,7 +6,7 @@
     "dev": "npm-run-all -p dev:next dev:generate",
     "dev:next": "next dev -p 1107",
     "dev:generate": "yarn generate --watch",
-    "build": "next build",
+    "build": "yarn generate && next build",
     "start": "next start",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
