@@ -48,11 +48,13 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ project }) => {
       </PageHero>
       <Header>{project.title}</Header>
       {project.techStack.length > 0 && (
-        <Text>
+        <Text className="leading-none">
           Built with: {project.techStack.map((stack) => stack.title).join(', ')}
         </Text>
       )}
-      <Markdown>{project.content ?? '**NO CONTENT**'}</Markdown>
+      <Markdown className="my-8">
+        {project.content ?? '**NO CONTENT**'}
+      </Markdown>
       <ImageAttribution
         imageDescription="Cover Image"
         photographer={project.heroImage?.author ?? 'UNKNOWN AUTHOR'}

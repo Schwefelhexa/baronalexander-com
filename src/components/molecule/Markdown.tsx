@@ -3,9 +3,10 @@ import ReactMarkdown from 'react-markdown';
 
 export interface MarkdownProps {
   children: string;
+  className?: string;
 }
-const Markdown: React.FC<MarkdownProps> = ({ children }) => (
-  <div className="markdown">
+const Markdown: React.FC<MarkdownProps> = ({ children, className }) => (
+  <div className={`markdown ${className}`}>
     <ReactMarkdown>{children}</ReactMarkdown>
   </div>
 );
