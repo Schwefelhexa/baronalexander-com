@@ -3,8 +3,10 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
+import { Image, ResponsiveImageType } from 'react-datocms';
+
 import Header from '../../components/atomic/Header';
-import Page from '../../components/layout/Page';
+import Page, { PageHero } from '../../components/layout/Page';
 import { queryCMS } from '../../core/cms';
 import { usePreviewMode } from '../../core/preview';
 import {
@@ -36,6 +38,11 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ project }) => {
       preview={isPreview}
       setPreview={(isPreview) => setPreviewMode(isPreview)}
     >
+      <PageHero identifier="project_page:hero_image">
+        <Image
+          data={project.heroImage!.responsiveImage! as ResponsiveImageType}
+        />
+      </PageHero>
       <Header>{project.title}</Header>
     </Page>
   );
@@ -51,6 +58,22 @@ const PROJECT_QUERY = gql`
         title
       }
       content
+      heroImage {
+        responsiveImage(
+          imgixParams: { fit: crop, w: 1680, h: 720, auto: format }
+        ) {
+          srcSet
+          webpSrcSet
+          sizes
+          src
+          width
+          height
+          aspectRatio
+          alt
+          title
+          base64
+        }
+      }
     }
   }
 `;
