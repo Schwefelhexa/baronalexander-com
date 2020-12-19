@@ -1,4 +1,6 @@
 import React from 'react';
+import classNames from 'classnames';
+
 import PreviewIndicator from '../PreviewIndicator';
 import { PageContextProvider } from './PageHero';
 
@@ -22,10 +24,12 @@ const Page: React.FC<PageProps> = ({
       </div>
     )}
     <PageContextProvider>
-      {(hero) => (
+      {(hero, padding) => (
         <main className="w-full min-h-full">
           {hero && <div>{hero}</div>}
-          <div className="px-32 py-16">{children}</div>
+          <div className={classNames('px-32 pb-16', { 'pt-16': padding })}>
+            {children}
+          </div>
         </main>
       )}
     </PageContextProvider>

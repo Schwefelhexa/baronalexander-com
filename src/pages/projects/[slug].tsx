@@ -38,7 +38,7 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ project }) => {
       preview={isPreview}
       setPreview={(isPreview) => setPreviewMode(isPreview)}
     >
-      <PageHero identifier="project_page:hero_image">
+      <PageHero identifier="project_page:hero_image" padding={false}>
         <Image
           data={project.heroImage!.responsiveImage! as ResponsiveImageType}
         />
