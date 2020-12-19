@@ -9,6 +9,11 @@ module.exports = {
       },
     },
   },
+  config: {
+    namingConvention: {
+      enumValues: 'keep',
+    },
+  },
 
   documents: 'src/**/*.tsx',
   generates: {
