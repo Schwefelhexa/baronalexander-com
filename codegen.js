@@ -13,11 +13,7 @@ module.exports = {
   documents: 'src/**/*.tsx',
   generates: {
     'src/generated/graphql.tsx': {
-      plugins: [
-        'typescript',
-        'typescript-operations',
-        'typescript-react-apollo',
-      ],
+      plugins: ['typescript', 'typescript-operations'],
     },
     './graphql.schema.json': {
       plugins: ['introspection'],
