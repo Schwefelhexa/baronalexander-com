@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/client';
 import { gql } from 'graphql-request';
 import { GetStaticProps } from 'next';
 import { ResponsiveImageType } from 'react-datocms';
+import Link from 'next/link';
 
 import Page from '../components/layout/Page';
 import { usePreviewMode } from '../core/preview';
@@ -29,13 +30,19 @@ const IndexPage: React.FC<IndexPageProps> = ({ project }) => {
           <Header>Alexander Baron.</Header>
         </div>
         {!!project && (
-          <ProjectHero
-            title={project.title ?? 'NO TITLE'}
-            techStack={project.techStack.map(
-              ({ title }) => title ?? 'NO TITLE'
-            )}
-            image={project.heroImage!.responsiveImage as ResponsiveImageType}
-          />
+          <Link href={`/projects/${project.slug}`}>
+            <a>
+              <ProjectHero
+                title={project.title ?? 'NO TITLE'}
+                techStack={project.techStack.map(
+                  ({ title }) => title ?? 'NO TITLE'
+                )}
+                image={
+                  project.heroImage!.responsiveImage as ResponsiveImageType
+                }
+              />
+            </a>
+          </Link>
         )}
       </div>
     </Page>
