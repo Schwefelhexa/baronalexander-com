@@ -16,6 +16,7 @@ import {
   ProjectQuery,
   ProjectQueryVariables,
 } from '../../generated/graphql';
+import ImageAttribution from '../../components/molecule/ImageAttribution';
 
 export interface ProjectPageProps {
   project: Exclude<ProjectQuery['project'], undefined>;
@@ -50,6 +51,11 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ project }) => {
           Built with: {project.techStack.map((stack) => stack.title).join(', ')}
         </Text>
       )}
+      <ImageAttribution
+        imageDescription="Cover Image"
+        photographer={project.heroImage?.author ?? 'UNKNOWN AUTHOR'}
+        platform={project.heroImage?.customData?.platform ?? 'UNKNOWN PLATFORM'}
+      />
     </Page>
   );
 };
@@ -65,6 +71,8 @@ const PROJECT_QUERY = gql`
       }
       content
       heroImage {
+        author
+        customData
         responsiveImage(
           imgixParams: { fit: crop, w: 1680, h: 720, auto: format }
         ) {
