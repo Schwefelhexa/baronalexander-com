@@ -18,6 +18,7 @@ import {
 } from '../../generated/graphql';
 import ImageAttribution from '../../components/molecule/ImageAttribution';
 import Markdown from '../../components/molecule/Markdown';
+import { motion } from 'framer-motion';
 
 export interface ProjectPageProps {
   project: Exclude<ProjectQuery['project'], undefined>;
@@ -42,9 +43,11 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ project }) => {
       setPreview={(isPreview) => setPreviewMode(isPreview)}
     >
       <PageHero identifier="project_page:hero_image" padding={false}>
-        <Image
-          data={project.heroImage!.responsiveImage! as ResponsiveImageType}
-        />
+        <motion.div layoutId={`image_${project.heroImage?.id}`}>
+          <Image
+            data={project.heroImage!.responsiveImage! as ResponsiveImageType}
+          />
+        </motion.div>
       </PageHero>
       <Header>{project.title}</Header>
       {project.techStack.length > 0 && (
@@ -75,6 +78,7 @@ const PROJECT_QUERY = gql`
       }
       content
       heroImage {
+        id
         author
         customData
         responsiveImage(

@@ -11,6 +11,7 @@ import Header from '../components/atomic/Header';
 import ProjectHero from '../components/feature/projects/ProjectHero';
 import { IndexPageQuery, IndexPageQueryVariables } from '../generated/graphql';
 import { queryCMS } from '../core/cms';
+import { motion } from 'framer-motion';
 
 interface IndexPageProps {
   project: IndexPageQuery['project'];
@@ -32,15 +33,17 @@ const IndexPage: React.FC<IndexPageProps> = ({ project }) => {
         {!!project && (
           <Link href={`/projects/${project.slug}`}>
             <a>
-              <ProjectHero
-                title={project.title ?? 'NO TITLE'}
-                techStack={project.techStack.map(
-                  ({ title }) => title ?? 'NO TITLE'
-                )}
-                image={
-                  project.heroImage!.responsiveImage as ResponsiveImageType
-                }
-              />
+              <motion.div layoutId={`image_${project.heroImage?.id}`}>
+                <ProjectHero
+                  title={project.title ?? 'NO TITLE'}
+                  techStack={project.techStack.map(
+                    ({ title }) => title ?? 'NO TITLE'
+                  )}
+                  image={
+                    project.heroImage!.responsiveImage as ResponsiveImageType
+                  }
+                />
+              </motion.div>
             </a>
           </Link>
         )}
@@ -60,6 +63,7 @@ const QUERY = gql`
       }
       createdAt
       heroImage {
+        id
         responsiveImage(
           imgixParams: { fit: crop, w: 1680, h: 720, auto: format }
         ) {
