@@ -17,6 +17,7 @@ import {
   ProjectQueryVariables,
 } from '../../generated/graphql';
 import ImageAttribution from '../../components/molecule/ImageAttribution';
+import Markdown from '../../components/molecule/Markdown';
 
 export interface ProjectPageProps {
   project: Exclude<ProjectQuery['project'], undefined>;
@@ -51,6 +52,7 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ project }) => {
           Built with: {project.techStack.map((stack) => stack.title).join(', ')}
         </Text>
       )}
+      <Markdown>{project.content ?? '**NO CONTENT**'}</Markdown>
       <ImageAttribution
         imageDescription="Cover Image"
         photographer={project.heroImage?.author ?? 'UNKNOWN AUTHOR'}

@@ -23,7 +23,8 @@
     "next-auth": "^3.1.0",
     "react": "16.13.1",
     "react-datocms": "^1.4.5",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "react-markdown": "^5.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

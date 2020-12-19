@@ -7,3 +7,10 @@ body,
 #__next {
   @apply h-full;
 }
+
+.markdown {
+  @apply text-xl;
+}
+.markdown p {
+  @apply mb-4;
+}
