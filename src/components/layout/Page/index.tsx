@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import classNames from 'classnames';
 
 import PreviewIndicator from '../PreviewIndicator';
@@ -16,25 +16,29 @@ const Page: React.FC<PageProps> = ({
   preview,
   setPreview,
   children,
-}) => (
-  <div className="w-full h-full relative">
-    {loggedIn && (
-      <div className="absolute inset-x-0 top-0 z-30">
-        <PreviewIndicator preview={preview} setPreview={setPreview} />
-      </div>
-    )}
-    <PageContextProvider>
-      {(hero, padding) => (
-        <main className="w-full min-h-full">
-          {hero && <div>{hero}</div>}
-          <div className={classNames('px-32 pb-16', { 'pt-16': padding })}>
-            {children}
-          </div>
-        </main>
+}) => {
+  const ref = useRef(null);
+
+  return (
+    <div className="w-full h-full relative">
+      {loggedIn && (
+        <div className="absolute inset-x-0 top-0 z-30">
+          <PreviewIndicator preview={preview} setPreview={setPreview} />
+        </div>
       )}
-    </PageContextProvider>
-  </div>
-);
+      <main className="w-full min-h-full">
+        <div ref={ref}></div>
+        <PageContextProvider heroContainer={ref.current}>
+          {(padding) => (
+            <div className={classNames('px-32 pb-16', { 'pt-16': padding })}>
+              {children}
+            </div>
+          )}
+        </PageContextProvider>
+      </main>
+    </div>
+  );
+};
 export default Page;
 
 export { PageHero } from './PageHero';

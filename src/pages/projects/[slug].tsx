@@ -1,14 +1,12 @@
 import { gql } from 'graphql-request';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { useSession } from 'next-auth/client';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { Image, ResponsiveImageType } from 'react-datocms';
 
 import Header from '../../components/atomic/Header';
-import Page, { PageHero } from '../../components/layout/Page';
+import { PageHero } from '../../components/layout/Page';
 import { queryCMS } from '../../core/cms';
-import { usePreviewMode } from '../../core/preview';
 import Text from '../../components/atomic/Text';
 import {
   PathsQuery,
@@ -26,9 +24,6 @@ export interface ProjectPageProps {
 const ProjectPage: React.FC<ProjectPageProps> = ({ project }) => {
   const router = useRouter();
 
-  const [session, loading] = useSession();
-  const [isPreview, setPreviewMode] = usePreviewMode();
-
   useEffect(() => {
     if (!project) {
       router.replace('/');
@@ -37,12 +32,8 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ project }) => {
   if (!project) return null;
 
   return (
-    <Page
-      loggedIn={!loading && session !== null}
-      preview={isPreview}
-      setPreview={(isPreview) => setPreviewMode(isPreview)}
-    >
-      <PageHero identifier="project_page:hero_image" padding={false}>
+    <>
+      <PageHero padding={false}>
         <motion.div layoutId={`image_${project.heroImage?.id}`}>
           <Image
             data={project.heroImage!.responsiveImage! as ResponsiveImageType}
@@ -63,7 +54,7 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ project }) => {
         photographer={project.heroImage?.author ?? 'UNKNOWN AUTHOR'}
         platform={project.heroImage?.customData?.platform ?? 'UNKNOWN PLATFORM'}
       />
-    </Page>
+    </>
   );
 };
 export default ProjectPage;

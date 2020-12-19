@@ -1,12 +1,9 @@
 import React from 'react';
-import { useSession } from 'next-auth/client';
 import { gql } from 'graphql-request';
 import { GetStaticProps } from 'next';
 import { ResponsiveImageType } from 'react-datocms';
 import Link from 'next/link';
 
-import Page from '../components/layout/Page';
-import { usePreviewMode } from '../core/preview';
 import Header from '../components/atomic/Header';
 import ProjectHero from '../components/feature/projects/ProjectHero';
 import { IndexPageQuery, IndexPageQueryVariables } from '../generated/graphql';
@@ -16,41 +13,28 @@ import { motion } from 'framer-motion';
 interface IndexPageProps {
   project: IndexPageQuery['project'];
 }
-const IndexPage: React.FC<IndexPageProps> = ({ project }) => {
-  const [session, loading] = useSession();
-  const [isPreview, setPreviewMode] = usePreviewMode();
-
-  return (
-    <Page
-      loggedIn={!loading && session !== null}
-      preview={isPreview}
-      setPreview={(isPreview) => setPreviewMode(isPreview)}
-    >
-      <div className="w-full h-full flex flex-col">
-        <div className="mb-16">
-          <Header>Alexander Baron.</Header>
-        </div>
-        {!!project && (
-          <Link href={`/projects/${project.slug}`}>
-            <a>
-              <motion.div layoutId={`image_${project.heroImage?.id}`}>
-                <ProjectHero
-                  title={project.title ?? 'NO TITLE'}
-                  techStack={project.techStack.map(
-                    ({ title }) => title ?? 'NO TITLE'
-                  )}
-                  image={
-                    project.heroImage!.responsiveImage as ResponsiveImageType
-                  }
-                />
-              </motion.div>
-            </a>
-          </Link>
-        )}
-      </div>
-    </Page>
-  );
-};
+const IndexPage: React.FC<IndexPageProps> = ({ project }) => (
+  <div className="w-full h-full flex flex-col">
+    <div className="mb-16">
+      <Header>Alexander Baron.</Header>
+    </div>
+    {!!project && (
+      <Link href={`/projects/${project.slug}`}>
+        <a>
+          <motion.div layoutId={`image_${project.heroImage?.id}`}>
+            <ProjectHero
+              title={project.title ?? 'NO TITLE'}
+              techStack={project.techStack.map(
+                ({ title }) => title ?? 'NO TITLE'
+              )}
+              image={project.heroImage!.responsiveImage as ResponsiveImageType}
+            />
+          </motion.div>
+        </a>
+      </Link>
+    )}
+  </div>
+);
 export default IndexPage;
 
 const QUERY = gql`
