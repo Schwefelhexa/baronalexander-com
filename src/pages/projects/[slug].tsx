@@ -123,7 +123,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: allProjects
       .map((path) => path.slug)
-      .filter((slug) => !!slug) as string[],
+      .filter((slug) => !!slug)
+      .map((slug) => `/projects/${slug}`),
     fallback: true,
   };
 };
