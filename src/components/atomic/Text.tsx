@@ -16,8 +16,9 @@ const Text: React.FC<TextProps> = ({
   <p
     className={classNames(
       'text-dark',
-      { 'text-4xl': size === 'default' },
-      { 'text-6xl': size === 'large' },
+      { 'text-base': size === 'small' },
+      { 'text-2xl lg:text-4xl': size === 'default' },
+      { 'text-4xl lg:text-6xl': size === 'large' },
       className
     )}
   >

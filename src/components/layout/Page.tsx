@@ -14,8 +14,8 @@ const PageMain: React.FC<PageMainProps> = ({
 }) => (
   <main
     className={classNames(
-      'px-32 pb-16 ',
-      { 'pt-16': !noTopPadding },
+      'px-10 pb-5 lg:px-32 lg:pb-16 ',
+      { 'pt-5 lg:pt-16': !noTopPadding },
       className
     )}
   >

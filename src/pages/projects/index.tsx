@@ -39,7 +39,7 @@ const ProjectsListPage: React.FC<ProjectsListPageProps> = ({
       <div>
         {projects.map((project) => (
           <Link href={`/projects/${project.slug}`} key={project.slug}>
-            <a className="flex flex-col max-w-5xl mb-16">
+            <a className="flex flex-col max-w-5xl mb-10 lg:mb-16">
               <motion.div layoutId={`image_${project.heroImage?.id}`}>
                 <ProjectHero
                   title={project.title ?? 'NO TITLE'}

@@ -20,13 +20,13 @@ const ProjectHero: React.FC<ProjectHeroProps> = ({
   return (
     <div>
       <Image
-        className={classNames('shadow-xl', {
-          'mb-8': !props.compact,
-          'mb-4': props.compact,
+        className={classNames('shadow-lg lg:shadow-xl', {
+          'mb-2 lg:mb-8': !props.compact,
+          'mb-1 lg:mb-4': props.compact,
         })}
         data={image}
       />
-      <Text size="large" className="mb-2">
+      <Text size="large" className="lg:mb-2">
         {title}
       </Text>
       {!props.compact && <Text>{props.techStack.join(', ')}</Text>}

@@ -42,20 +42,25 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ subscriptionData }) => {
 
   return (
     <>
-      <motion.div layoutId={`image_${project.heroImage?.id}`}>
-        <Image
-          data={project.heroImage!.responsiveImage! as ResponsiveImageType}
-        />
+      <motion.div
+        layoutId={`image_${project.heroImage?.id}`}
+        className="lg:h-screen-2/3 overflow-hidden"
+      >
+        <div className="lg:-my-48">
+          <Image
+            data={project.heroImage!.responsiveImage! as ResponsiveImageType}
+          />
+        </div>
       </motion.div>
       <Page.Main noTopPadding>
         <Header>{project.title}</Header>
         {project.techStack.length > 0 && (
-          <Text className="leading-none">
+          <Text className="lg:leading-none mt-2 lg:mt-0">
             Built with:{' '}
             {project.techStack.map((stack) => stack.title).join(', ')}
           </Text>
         )}
-        <Markdown className="my-8">
+        <Markdown className="my-6 lg:my-8">
           {project.content ?? '**NO CONTENT**'}
         </Markdown>
         <ImageAttribution
@@ -85,7 +90,7 @@ const PROJECT_QUERY = gql`
         author
         customData
         responsiveImage(
-          imgixParams: { fit: crop, w: 1680, h: 720, auto: format }
+          imgixParams: { fit: crop, w: 1680, h: 1080, auto: format }
         ) {
           srcSet
           webpSrcSet

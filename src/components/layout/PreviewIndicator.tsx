@@ -16,7 +16,7 @@ const PreviewIndicator: React.FC<PreviewIndicatorProps> = ({
     })}
     onClick={() => setPreview(!preview)}
   >
-    <p className="w-full text-center text-xl">
+    <p className="w-full text-center lg:text-xl">
       {preview
         ? 'You are seeing draft content'
         : 'You are seeing published content'}
