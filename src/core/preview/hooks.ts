@@ -3,7 +3,7 @@ import { getPreviewMode, setPreviewMode } from '.';
 
 export const usePreviewMode = (): [
   boolean,
-  (preview: boolean) => void,
+  (preview: boolean) => Promise<void>,
   boolean
 ] => {
   const [preview, setPreview] = useState(false);
@@ -18,7 +18,7 @@ export const usePreviewMode = (): [
 
   const togglePreview = useCallback((preview) => {
     setLoading(true);
-    setPreviewMode(preview)
+    return setPreviewMode(preview)
       .then(() => setPreview(preview))
       .catch(() => {})
       .finally(() => setLoading(false));

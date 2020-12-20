@@ -2,12 +2,19 @@ import React from 'react';
 import { AppProps } from 'next/app';
 import { Provider, useSession } from 'next-auth/client';
 import { AnimateSharedLayout } from 'framer-motion';
+import { Router } from 'next/router';
 
 import Page from '../components/layout/Page';
 import { usePreviewMode } from '../core/preview';
 import '../styles/tailwind.css';
 
-const AppWithProviders: React.FC = ({ children }) => {
+interface AppWithProvidersProps {
+  router: Router;
+}
+const AppWithProviders: React.FC<AppWithProvidersProps> = ({
+  children,
+  router,
+}) => {
   const [session, loading] = useSession();
   const [isPreview, setPreviewMode] = usePreviewMode();
 
@@ -15,17 +22,19 @@ const AppWithProviders: React.FC = ({ children }) => {
     <Page
       loggedIn={!loading && session !== null}
       preview={isPreview}
-      setPreview={(isPreview) => setPreviewMode(isPreview)}
+      setPreview={(isPreview) =>
+        setPreviewMode(isPreview).then(() => router.reload())
+      }
     >
       {children}
     </Page>
   );
 };
 
-const App: React.FC<AppProps> = ({ Component, pageProps }) => (
+const App: React.FC<AppProps> = ({ Component, pageProps, router }) => (
   <AnimateSharedLayout>
     <Provider session={pageProps.session}>
-      <AppWithProviders>
+      <AppWithProviders router={router}>
         <Component {...pageProps} />
       </AppWithProviders>
     </Provider>
