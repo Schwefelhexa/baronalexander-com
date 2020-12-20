@@ -29,3 +29,28 @@ export const queryCMS = async <TData, TVariables>(
   );
   return response;
 };
+
+export interface LivePreview<TData, TVariables> {
+  query: string;
+  variables: TVariables;
+  initialData: TData;
+  enabled: boolean;
+  token: string;
+  preview: boolean;
+}
+export const queryCMSLive = async <TData, TVariables>(
+  document: RequestDocument,
+  preview?: boolean,
+  variables?: TVariables
+): Promise<LivePreview<TData, TVariables>> => {
+  const data = await queryCMS<TData, TVariables>(document, preview, variables);
+
+  return {
+    enabled: !!preview,
+    initialData: data,
+    query: document as string,
+    variables: variables ?? ({} as TVariables),
+    token: preview ? process.env.DATOCMS_API_TOKEN : 'PREVIEW_DISABLED',
+    preview: !!preview,
+  };
+};

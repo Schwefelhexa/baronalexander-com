@@ -2,11 +2,15 @@ import { gql } from 'graphql-request';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import { Image, ResponsiveImageType } from 'react-datocms';
+import {
+  Image,
+  ResponsiveImageType,
+  useQuerySubscription,
+} from 'react-datocms';
 
 import Header from '../../components/atomic/Header';
 import { PageHero } from '../../components/layout/Page';
-import { queryCMS } from '../../core/cms';
+import { LivePreview, queryCMS, queryCMSLive } from '../../core/cms';
 import Text from '../../components/atomic/Text';
 import {
   PathsQuery,
@@ -19,10 +23,15 @@ import Markdown from '../../components/molecule/Markdown';
 import { motion } from 'framer-motion';
 
 export interface ProjectPageProps {
-  project: Exclude<ProjectQuery['project'], undefined>;
+  subscriptionData: LivePreview<ProjectQuery, ProjectQueryVariables>;
 }
-const ProjectPage: React.FC<ProjectPageProps> = ({ project }) => {
+const ProjectPage: React.FC<ProjectPageProps> = ({ subscriptionData }) => {
   const router = useRouter();
+
+  const { data } = useQuerySubscription<ProjectQuery, ProjectQueryVariables>(
+    subscriptionData
+  );
+  const project = data?.project;
 
   useEffect(() => {
     if (!project) {
@@ -94,13 +103,17 @@ export const getStaticProps: GetStaticProps<ProjectPageProps> = async ({
   params,
   preview,
 }) => {
-  const { project } = await queryCMS<ProjectQuery, ProjectQueryVariables>(
+  const subscription = await queryCMSLive<ProjectQuery, ProjectQueryVariables>(
     PROJECT_QUERY,
     preview,
     { slug: params!.slug! as string }
   );
 
-  return { props: { project: project ?? null } };
+  return {
+    props: {
+      subscriptionData: subscription,
+    },
+  };
 };
 
 const PATHS_QUERY = gql`
