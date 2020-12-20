@@ -136,6 +136,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
       .map((path) => path.slug)
       .filter((slug) => !!slug)
       .map((slug) => `/projects/${slug}`),
-    fallback: true,
+    fallback: 'blocking',
   };
 };
