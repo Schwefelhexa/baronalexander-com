@@ -10,6 +10,7 @@ import { IndexPageQuery, IndexPageQueryVariables } from '../generated/graphql';
 import { LivePreview, queryCMSLive } from '../core/cms';
 import { motion } from 'framer-motion';
 import Page from '../components/layout/Page';
+import Text from '../components/atomic/Text';
 
 interface IndexPageProps {
   subscriptionData: LivePreview<IndexPageQuery, IndexPageQueryVariables>;
@@ -38,11 +39,19 @@ const IndexPage: React.FC<IndexPageProps> = ({ subscriptionData }) => {
                 image={
                   project.heroImage!.responsiveImage as ResponsiveImageType
                 }
+                compact={false}
               />
             </motion.div>
           </a>
         </Link>
       )}
+      <div className="flex flex-row mt-16">
+        <Link href="/projects">
+          <a>
+            <Text>See all projects</Text>
+          </a>
+        </Link>
+      </div>
     </Page.Main>
   );
 };
