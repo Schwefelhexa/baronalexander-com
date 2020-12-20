@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import PreviewIndicator from '../PreviewIndicator';
+import PreviewIndicator from './PreviewIndicator';
 
 export interface PageMainProps {
   className?: string;
