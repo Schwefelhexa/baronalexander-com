@@ -9,7 +9,6 @@ import {
 } from 'react-datocms';
 
 import Header from '../../components/atomic/Header';
-import { PageHero } from '../../components/layout/Page';
 import { LivePreview, queryCMS, queryCMSLive } from '../../core/cms';
 import Text from '../../components/atomic/Text';
 import {
@@ -21,6 +20,7 @@ import {
 import ImageAttribution from '../../components/molecule/ImageAttribution';
 import Markdown from '../../components/molecule/Markdown';
 import { motion } from 'framer-motion';
+import Page from '../../components/layout/Page';
 
 export interface ProjectPageProps {
   subscriptionData: LivePreview<ProjectQuery, ProjectQueryVariables>;
@@ -42,27 +42,30 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ subscriptionData }) => {
 
   return (
     <>
-      <PageHero padding={false}>
-        <motion.div layoutId={`image_${project.heroImage?.id}`}>
-          <Image
-            data={project.heroImage!.responsiveImage! as ResponsiveImageType}
-          />
-        </motion.div>
-      </PageHero>
-      <Header>{project.title}</Header>
-      {project.techStack.length > 0 && (
-        <Text className="leading-none">
-          Built with: {project.techStack.map((stack) => stack.title).join(', ')}
-        </Text>
-      )}
-      <Markdown className="my-8">
-        {project.content ?? '**NO CONTENT**'}
-      </Markdown>
-      <ImageAttribution
-        imageDescription="Cover Image"
-        photographer={project.heroImage?.author ?? 'UNKNOWN AUTHOR'}
-        platform={project.heroImage?.customData?.platform ?? 'UNKNOWN PLATFORM'}
-      />
+      <motion.div layoutId={`image_${project.heroImage?.id}`}>
+        <Image
+          data={project.heroImage!.responsiveImage! as ResponsiveImageType}
+        />
+      </motion.div>
+      <Page.Main noTopPadding>
+        <Header>{project.title}</Header>
+        {project.techStack.length > 0 && (
+          <Text className="leading-none">
+            Built with:{' '}
+            {project.techStack.map((stack) => stack.title).join(', ')}
+          </Text>
+        )}
+        <Markdown className="my-8">
+          {project.content ?? '**NO CONTENT**'}
+        </Markdown>
+        <ImageAttribution
+          imageDescription="Cover Image"
+          photographer={project.heroImage?.author ?? 'UNKNOWN AUTHOR'}
+          platform={
+            project.heroImage?.customData?.platform ?? 'UNKNOWN PLATFORM'
+          }
+        />
+      </Page.Main>
     </>
   );
 };

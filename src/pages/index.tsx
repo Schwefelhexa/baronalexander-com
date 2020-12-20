@@ -9,6 +9,7 @@ import ProjectHero from '../components/feature/projects/ProjectHero';
 import { IndexPageQuery, IndexPageQueryVariables } from '../generated/graphql';
 import { LivePreview, queryCMSLive } from '../core/cms';
 import { motion } from 'framer-motion';
+import Page from '../components/layout/Page';
 
 interface IndexPageProps {
   subscriptionData: LivePreview<IndexPageQuery, IndexPageQueryVariables>;
@@ -21,7 +22,7 @@ const IndexPage: React.FC<IndexPageProps> = ({ subscriptionData }) => {
   const project = data!.project;
 
   return (
-    <div className="w-full h-full flex flex-col">
+    <Page.Main className="w-full h-full flex flex-col">
       <div className="mb-16">
         <Header>Alexander Baron.</Header>
       </div>
@@ -42,7 +43,7 @@ const IndexPage: React.FC<IndexPageProps> = ({ subscriptionData }) => {
           </a>
         </Link>
       )}
-    </div>
+    </Page.Main>
   );
 };
 export default IndexPage;
