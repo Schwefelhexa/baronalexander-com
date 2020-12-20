@@ -16,8 +16,8 @@ import {
 } from '../../generated/graphql';
 import Page from '../../components/layout/Page';
 import { motion } from 'framer-motion';
-import Text from '../../components/atomic/Text';
 import ProjectHero from '../../components/feature/projects/ProjectHero';
+import SEO from '../../components/feature/SEO';
 
 export interface ProjectsListPageProps {
   subscriptionData: LivePreview<ProjectsListQuery, ProjectsListQueryVariables>;
@@ -33,6 +33,12 @@ const ProjectsListPage: React.FC<ProjectsListPageProps> = ({
 
   return (
     <Page.Main>
+      <SEO
+        data={{
+          title: 'Projects',
+          description: "See the projects I've worked on",
+        }}
+      />
       <div className="mb-16">
         <Header>Projects.</Header>
       </div>

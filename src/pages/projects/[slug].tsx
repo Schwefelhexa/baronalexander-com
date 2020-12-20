@@ -21,6 +21,7 @@ import ImageAttribution from '../../components/molecule/ImageAttribution';
 import Markdown from '../../components/molecule/Markdown';
 import { motion } from 'framer-motion';
 import Page from '../../components/layout/Page';
+import SEO, { SEO_FRAGMENT } from '../../components/feature/SEO';
 
 export interface ProjectPageProps {
   subscriptionData: LivePreview<ProjectQuery, ProjectQueryVariables>;
@@ -42,6 +43,7 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ subscriptionData }) => {
 
   return (
     <>
+      <SEO titlePrefix="Project" data={project.seo} />
       <motion.div
         layoutId={`image_${project.heroImage?.id}`}
         className="lg:h-screen-2/3 overflow-hidden"
@@ -77,6 +79,7 @@ const ProjectPage: React.FC<ProjectPageProps> = ({ subscriptionData }) => {
 export default ProjectPage;
 
 const PROJECT_QUERY = gql`
+  ${SEO_FRAGMENT}
   query Project($slug: String!) {
     project(filter: { slug: { eq: $slug } }) {
       title
@@ -103,6 +106,9 @@ const PROJECT_QUERY = gql`
           title
           base64
         }
+      }
+      seo {
+        ...SEO
       }
     }
   }

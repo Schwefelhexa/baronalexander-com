@@ -3,14 +3,15 @@ import { gql } from 'graphql-request';
 import { GetStaticProps } from 'next';
 import { ResponsiveImageType, useQuerySubscription } from 'react-datocms';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 import Header from '../components/atomic/Header';
 import ProjectHero from '../components/feature/projects/ProjectHero';
 import { IndexPageQuery, IndexPageQueryVariables } from '../generated/graphql';
 import { LivePreview, queryCMSLive } from '../core/cms';
-import { motion } from 'framer-motion';
 import Page from '../components/layout/Page';
 import Text from '../components/atomic/Text';
+import SEO from '../components/feature/SEO';
 
 interface IndexPageProps {
   subscriptionData: LivePreview<IndexPageQuery, IndexPageQueryVariables>;
@@ -24,6 +25,12 @@ const IndexPage: React.FC<IndexPageProps> = ({ subscriptionData }) => {
 
   return (
     <Page.Main className="w-full h-full flex flex-col">
+      <SEO
+        data={{
+          title: 'Alexander Baron',
+          description: 'My personal website',
+        }}
+      />
       <div className="mb-16">
         <Header>Alexander Baron.</Header>
       </div>
