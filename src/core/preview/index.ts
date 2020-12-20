@@ -1,6 +1,7 @@
 export const getPreviewMode = (): Promise<boolean> =>
   fetch('/api/auth/preview')
     .then((res) => res.json())
+    .catch(() => false)
     .then(({ preview }) => (preview ?? false) as boolean);
 
 export const setPreviewMode = (preview: boolean): Promise<void> =>

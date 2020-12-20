@@ -15,6 +15,12 @@ describe('getPreviewMode', () => {
     expect(fetchMock.calls(endpoint).length).toEqual(1);
   });
 
+  it('should return false on 403', async () => {
+    fetchMock.getOnce(endpoint, { status: 403, body: null });
+    const result = await getPreviewMode();
+    expect(result).toBe(false);
+  });
+
   it('should return correct response', async () => {
     fetchMock.getOnce(endpoint, { preview: false });
     let result = await getPreviewMode();
