@@ -36,7 +36,7 @@ const Page: React.FC<PageProps> & { Main: typeof PageMain } = ({
   setPreview,
   children,
 }) => (
-  <div className="w-full h-full relative">
+  <div className="w-full h-full relative dark:bg-dark">
     {loggedIn && (
       <div className="absolute inset-x-0 top-0 z-30">
         <PreviewIndicator preview={preview} setPreview={setPreview} />

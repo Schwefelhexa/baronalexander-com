@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppProps } from 'next/app';
 import { Provider, useSession } from 'next-auth/client';
 import { AnimateSharedLayout } from 'framer-motion';
@@ -7,6 +7,7 @@ import { Router } from 'next/router';
 import Page from '../components/layout/Page';
 import { usePreviewMode } from '../core/preview';
 import '../styles/tailwind.css';
+import DarkModeProvider from '../components/feature/dark_mode/DarkModeProvider';
 
 interface AppWithProvidersProps {
   router: Router;
@@ -31,13 +32,23 @@ const AppWithProviders: React.FC<AppWithProvidersProps> = ({
   );
 };
 
-const App: React.FC<AppProps> = ({ Component, pageProps, router }) => (
-  <AnimateSharedLayout>
-    <Provider session={pageProps.session}>
-      <AppWithProviders router={router}>
-        <Component {...pageProps} />
-      </AppWithProviders>
-    </Provider>
-  </AnimateSharedLayout>
-);
+const App: React.FC<AppProps> = ({ Component, pageProps, router }) => {
+  const [element, setElement] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    setElement(document.getElementsByTagName('body')[0] as HTMLElement);
+  }, []);
+
+  return (
+    <AnimateSharedLayout>
+      <Provider session={pageProps.session}>
+        <DarkModeProvider container={element}>
+          <AppWithProviders router={router}>
+            <Component {...pageProps} />
+          </AppWithProviders>
+        </DarkModeProvider>
+      </Provider>
+    </AnimateSharedLayout>
+  );
+};
 export default App;

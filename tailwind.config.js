@@ -1,5 +1,6 @@
 module.exports = {
   purge: ['src/**/*.tsx', 'src/**/*.ts'],
+  darkMode: 'class',
   theme: {
     colors: {
       light: '#FFFFFF',

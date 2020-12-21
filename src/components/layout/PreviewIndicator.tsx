@@ -11,8 +11,8 @@ const PreviewIndicator: React.FC<PreviewIndicatorProps> = ({
 }) => (
   <div
     className={classNames('w-full py-1 select-none cursor-pointer', {
-      'bg-dark text-light': preview,
-      'bg-light': !preview,
+      'bg-dark dark:bg-light text-light dark:text-dark': preview,
+      'bg-light dark:bg-dark dark:text-light': !preview,
     })}
     onClick={() => setPreview(!preview)}
   >

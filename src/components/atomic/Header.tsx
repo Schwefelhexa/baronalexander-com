@@ -10,7 +10,7 @@ const Header: React.FC<HeaderProps> = ({
   noLayoutTransition = false,
 }) => (
   <motion.h1
-    className="text-dark font-bold text-6xl lg:text-9xl"
+    className="text-dark dark:text-light font-bold text-6xl lg:text-9xl"
     layoutId={noLayoutTransition ? undefined : '_HEADER'}
   >
     {children}

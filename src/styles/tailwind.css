@@ -9,7 +9,7 @@ body,
 }
 
 .markdown {
-  @apply text-xl;
+  @apply text-xl dark:text-light;
 }
 .markdown p {
   @apply mb-4;
