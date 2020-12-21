@@ -11,15 +11,18 @@ export const DarkModeContext = createContext<DarkModeContextType>({
 });
 
 export interface DarkModeProviderProps {
-  container: HTMLElement | null;
   startState?: boolean;
 }
 const DarkModeProvider: React.FC<DarkModeProviderProps> = ({
   startState,
   children,
-  container,
 }) => {
-  // TODO Persist dark mode preference
+  const [container, setContainer] = useState<HTMLElement | null>(null);
+
+  useEffect(() => {
+    setContainer(document.getElementsByTagName('html')[0] as HTMLElement);
+  }, []);
+
   const [darkMode, setDarkMode] = useState(startState ?? false);
 
   useEffect(() => {

@@ -32,23 +32,15 @@ const AppWithProviders: React.FC<AppWithProvidersProps> = ({
   );
 };
 
-const App: React.FC<AppProps> = ({ Component, pageProps, router }) => {
-  const [element, setElement] = useState<HTMLElement | null>(null);
-
-  useEffect(() => {
-    setElement(document.getElementsByTagName('html')[0] as HTMLElement);
-  }, []);
-
-  return (
-    <AnimateSharedLayout>
-      <Provider session={pageProps.session}>
-        <DarkModeProvider container={element}>
-          <AppWithProviders router={router}>
-            <Component {...pageProps} />
-          </AppWithProviders>
-        </DarkModeProvider>
-      </Provider>
-    </AnimateSharedLayout>
-  );
-};
+const App: React.FC<AppProps> = ({ Component, pageProps, router }) => (
+  <AnimateSharedLayout>
+    <Provider session={pageProps.session}>
+      <DarkModeProvider>
+        <AppWithProviders router={router}>
+          <Component {...pageProps} />
+        </AppWithProviders>
+      </DarkModeProvider>
+    </Provider>
+  </AnimateSharedLayout>
+);
 export default App;
