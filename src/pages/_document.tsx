@@ -26,7 +26,7 @@ const darkModeScript = `
   var key = '${DARK_MODE_LOCAL_STORAGE_KEY}';
   var stored = localStorage.getItem(key);
 
-  var container = document.getElementsByTagName('body')[0];
+  var container = document.getElementsByTagName('html')[0];
 
   function setDarkMode(enabled) {
     localStorage.setItem(key, enabled ? 'true' : 'false');

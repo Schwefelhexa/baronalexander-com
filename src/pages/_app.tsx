@@ -36,7 +36,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps, router }) => {
   const [element, setElement] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    setElement(document.getElementsByTagName('body')[0] as HTMLElement);
+    setElement(document.getElementsByTagName('html')[0] as HTMLElement);
   }, []);
 
   return (
