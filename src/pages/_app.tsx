@@ -1,31 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppProps } from 'next/app';
-import Head from 'next/head';
-import { Provider } from 'next-auth/client';
+import { Provider, useSession } from 'next-auth/client';
+import { AnimateSharedLayout } from 'framer-motion';
+import { Router } from 'next/router';
 
+import Page from '../components/layout/Page';
+import { usePreviewMode } from '../core/preview';
 import '../styles/tailwind.css';
-import AuthShortcuts from '../components/auth/AuthShortcuts';
-import PreviewProvider from '../components/auth/PreviewProvider';
+import DarkModeProvider from '../components/feature/dark_mode/DarkModeProvider';
 
-const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => (
-  <>
-    <Head>
-      <title>Alexander Baron</title>
-      <meta name="description" content="Alexander Baron's Website" />
-      <link rel="icon" href="/favicon.ico" />
-      <link
-        rel="prefetch"
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&amp;display=swap"
-        as="style"
-      />
-    </Head>
+interface AppWithProvidersProps {
+  router: Router;
+}
+const AppWithProviders: React.FC<AppWithProvidersProps> = ({
+  children,
+  router,
+}) => {
+  const [session, loading] = useSession();
+  const [isPreview, setPreviewMode] = usePreviewMode();
+
+  return (
+    <Page
+      loggedIn={!loading && session !== null}
+      preview={isPreview}
+      setPreview={(isPreview) =>
+        setPreviewMode(isPreview).then(() => router.reload())
+      }
+    >
+      {children}
+    </Page>
+  );
+};
+
+const App: React.FC<AppProps> = ({ Component, pageProps, router }) => (
+  <AnimateSharedLayout>
     <Provider session={pageProps.session}>
-      <PreviewProvider>
-        <Component {...pageProps} />
-        <AuthShortcuts />
-      </PreviewProvider>
+      <DarkModeProvider>
+        <AppWithProviders router={router}>
+          <Component {...pageProps} />
+        </AppWithProviders>
+      </DarkModeProvider>
     </Provider>
-  </>
+  </AnimateSharedLayout>
 );
-
-export default MyApp;
+export default App;

@@ -1,160 +1,152 @@
-import { gql } from '@apollo/client';
+import { gql } from 'graphql-request';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import React from 'react';
-
-import Page from '../../components/layout/Page';
-import RichText, { Assets } from '../../components/RichText';
-import client from '../../core/graphql';
-import Asset from '../../core/model/Asset';
-import RichTextType from '../../core/model/RichText';
-import { Always } from '../../core/typeutil';
+import React, { useEffect } from 'react';
 import {
+  Image,
+  ResponsiveImageType,
+  useQuerySubscription,
+} from 'react-datocms';
+
+import Header from '../../components/atomic/Header';
+import { LivePreview, queryCMS, queryCMSLive } from '../../core/cms';
+import Text from '../../components/atomic/Text';
+import {
+  PathsQuery,
+  PathsQueryVariables,
   ProjectQuery,
   ProjectQueryVariables,
-  SlugsQuery,
-  SlugsQueryVariables,
 } from '../../generated/graphql';
+import ImageAttribution from '../../components/molecule/ImageAttribution';
+import Markdown from '../../components/molecule/Markdown';
+import { motion } from 'framer-motion';
+import Page from '../../components/layout/Page';
+import SEO, { SEO_FRAGMENT } from '../../components/feature/SEO';
 
-type Project = Always<
-  Always<Always<ProjectQuery['projectCollection']>['items']>[0]
->;
-
-interface Props {
-  project: Project;
-  preview: boolean;
+export interface ProjectPageProps {
+  subscriptionData: LivePreview<ProjectQuery, ProjectQueryVariables>;
 }
-const ProjectPage: React.FC<Props> = ({ project, preview }) => {
-  const { isFallback } = useRouter();
-  if (isFallback) return null;
+const ProjectPage: React.FC<ProjectPageProps> = ({ subscriptionData }) => {
+  const router = useRouter();
 
-  const assets: Assets = project
-    .description!.links.assets.block.map(
-      (value) =>
-        ({
-          id: value!.sys.id,
-          description: value!.description,
-          title: value!.title,
-          url: value!.url,
-          width: value!.width,
-          height: value!.height,
-        } as Asset)
-    )
-    .reduce((all, current) => ({ ...all, [current.id]: current }), {});
+  const { data } = useQuerySubscription<ProjectQuery, ProjectQueryVariables>(
+    subscriptionData
+  );
+  const project = data?.project;
+
+  useEffect(() => {
+    if (!project) {
+      router.replace('/');
+    }
+  }, [project, router]);
+  if (!project) return null;
+
   return (
-    <Page>
-      <h1 className="text-primary text-5xl md:text-6xl mb-6">
-        {project.name}{' '}
-        {preview && <span className="text-positive"> - PREVIEW</span>}
-      </h1>
-      <RichText
-        text={project.description?.json as RichTextType}
-        assets={assets}
-      />
-      {(project.techStackCollection?.items.length ?? 0) > 0 && (
-        <div className="mt-16">
-          <h2 className="text-primary text-2xl">Built with...</h2>
-          <div className="flex flex-row flex-wrap overflow-x-hidden">
-            {project.techStackCollection?.items.map((stack) => (
-              <div
-                key={stack?.sys.id}
-                className="bg-primary text-light px-4 py-1.5 mt-1 mr-2"
-              >
-                {stack!.name}
-              </div>
-            ))}
-          </div>
+    <>
+      <SEO titlePrefix="Project" data={project.seo} />
+      <motion.div
+        layoutId={`image_${project.heroImage?.id}`}
+        className="lg:h-screen-2/3 overflow-hidden"
+      >
+        <div className="lg:-my-48">
+          <Image
+            data={project.heroImage!.responsiveImage! as ResponsiveImageType}
+          />
         </div>
-      )}
-    </Page>
+      </motion.div>
+      <Page.Main noTopPadding>
+        <Header>{project.title}</Header>
+        {project.techStack.length > 0 && (
+          <Text className="lg:leading-none mt-2 lg:mt-0">
+            Built with:{' '}
+            {project.techStack.map((stack) => stack.title).join(', ')}
+          </Text>
+        )}
+        <Markdown className="my-6 lg:my-8">
+          {project.content ?? '**NO CONTENT**'}
+        </Markdown>
+        <ImageAttribution
+          imageDescription="Cover Image"
+          photographer={project.heroImage?.author ?? 'UNKNOWN AUTHOR'}
+          platform={
+            project.heroImage?.customData?.platform ?? 'UNKNOWN PLATFORM'
+          }
+        />
+      </Page.Main>
+    </>
   );
 };
 export default ProjectPage;
 
 const PROJECT_QUERY = gql`
-  query Project($slug: String!, $preview: Boolean!) {
-    projectCollection(where: { slug: $slug }, limit: 1, preview: $preview) {
-      items {
-        name
-        description {
-          json
-          links {
-            assets {
-              block {
-                sys {
-                  id
-                }
-                title
-                description
-                url
-                width
-                height
-              }
-            }
-          }
+  ${SEO_FRAGMENT}
+  query Project($slug: String!) {
+    project(filter: { slug: { eq: $slug } }) {
+      title
+      techStack {
+        id
+        title
+      }
+      content
+      heroImage {
+        id
+        author
+        customData
+        responsiveImage(
+          imgixParams: { fit: crop, w: 1680, h: 1080, auto: format }
+        ) {
+          srcSet
+          webpSrcSet
+          sizes
+          src
+          width
+          height
+          aspectRatio
+          alt
+          title
+          base64
         }
-        demo
-        techStackCollection {
-          items {
-            sys {
-              id
-            }
-            name
-            icon {
-              url
-            }
-            website
-          }
-        }
+      }
+      seo {
+        ...SEO
       }
     }
   }
 `;
-export const getStaticProps: GetStaticProps<Props> = async ({
+export const getStaticProps: GetStaticProps<ProjectPageProps> = async ({
   params,
   preview,
 }) => {
-  const isPreview = preview ?? false;
-
-  const { data, errors } = await client.query<
-    ProjectQuery,
-    ProjectQueryVariables
-  >({
-    query: PROJECT_QUERY,
-    variables: {
-      slug: params!.slug as string,
-      preview: isPreview,
-    },
-  });
-  if (errors) console.error(errors);
-  if (data.projectCollection?.items.length === 0) return { notFound: true };
+  const subscription = await queryCMSLive<ProjectQuery, ProjectQueryVariables>(
+    PROJECT_QUERY,
+    preview,
+    { slug: params!.slug! as string }
+  );
 
   return {
-    props: { project: data.projectCollection?.items[0]!, preview: isPreview },
-    revalidate: 1,
+    props: {
+      subscriptionData: subscription,
+    },
   };
 };
 
-const SLUGS_QUERY = gql`
-  query Slugs {
-    projectCollection {
-      items {
-        slug
-      }
+const PATHS_QUERY = gql`
+  query Paths {
+    allProjects {
+      slug
     }
   }
 `;
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data } = await client.query<SlugsQuery, SlugsQueryVariables>({
-    query: SLUGS_QUERY,
-  });
+  const { allProjects } = await queryCMS<PathsQuery, PathsQueryVariables>(
+    PATHS_QUERY
+  );
 
   return {
-    paths: data
-      .projectCollection!.items.map((slug) =>
-        slug ? '/projects/' + slug.slug : null
-      )
-      .filter((slug) => slug !== null) as string[],
-    fallback: false,
+    paths: allProjects
+      .map((path) => path.slug)
+      .filter((slug) => !!slug)
+      .map((slug) => `/projects/${slug}`),
+    fallback: 'blocking',
   };
 };

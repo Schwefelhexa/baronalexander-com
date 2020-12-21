@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import NextAuth, { InitOptions } from 'next-auth';
 import Providers from 'next-auth/providers';
 
-const options: InitOptions = {
+const options = {
   providers: [
     Providers.Google({
       clientId: process.env.AUTH_GOOGLE_ID,
@@ -14,7 +14,11 @@ const options: InitOptions = {
   session: {
     jwt: true,
   },
-  secret: process.env.AUTH_JWT_SECRET,
+  jwt: {
+    secret: process.env.AUTH_JWT_SECRET,
+    encryption: false,
+    signingKey: process.env.AUTH_JWT_SIGNING_KEY,
+  },
   callbacks: {
     signIn: async (user) => {
       if (!user.email) return false;
@@ -23,7 +27,7 @@ const options: InitOptions = {
       return allowed.includes(user.email!);
     },
   },
-};
+} as InitOptions;
 
 export default (req: NextApiRequest, res: NextApiResponse) =>
   NextAuth(req, res, options);

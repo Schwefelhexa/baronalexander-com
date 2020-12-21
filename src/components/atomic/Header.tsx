@@ -1,16 +1,19 @@
+import { motion } from 'framer-motion';
 import React from 'react';
 
-interface Props {
-  light?: boolean;
+export interface HeaderProps {
   children: React.ReactNode;
+  noLayoutTransition?: boolean;
 }
-const Header: React.FC<Props> = ({ children, light = false }) => (
-  <h1
-    className={`${
-      light ? 'text-light' : 'text-primary'
-    } font-medium text-6.5xl sm:text-7xl md:text-8xl md:leading-none xl:text-9xl`}
+const Header: React.FC<HeaderProps> = ({
+  children,
+  noLayoutTransition = false,
+}) => (
+  <motion.h1
+    className="text-dark dark:text-light font-bold text-6xl lg:text-9xl"
+    layoutId={noLayoutTransition ? undefined : '_HEADER'}
   >
     {children}
-  </h1>
+  </motion.h1>
 );
 export default Header;

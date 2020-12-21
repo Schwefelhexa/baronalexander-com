@@ -1,47 +1,109 @@
 import React from 'react';
+import { gql } from 'graphql-request';
+import { GetStaticProps } from 'next';
+import { ResponsiveImageType, useQuerySubscription } from 'react-datocms';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 
-import CtaLink from '../components/atomic/CtaLink';
 import Header from '../components/atomic/Header';
-import LinkCard from '../components/atomic/LinkCard';
+import ProjectHero from '../components/feature/projects/ProjectHero';
+import { IndexPageQuery, IndexPageQueryVariables } from '../generated/graphql';
+import { LivePreview, queryCMSLive } from '../core/cms';
 import Page from '../components/layout/Page';
-import ResponsiveSplit from '../components/layout/ResponsiveSplit';
+import Text from '../components/atomic/Text';
+import SEO from '../components/feature/SEO';
 
-const Home: React.FC = () => (
-  <Page noPadding noScroll>
-    <ResponsiveSplit>
-      <ResponsiveSplit.Element className="h-1/2 flex flex-col justify-between items-stretch bg-primary-dark pt-8 pb-10 px-8 lg:h-full lg:flex-grow lg:px-16 lg:pt-12">
-        <Header light>
-          Alexander <br /> Baron
-        </Header>
-        <div className="lg:absolute lg:top-5/12 lg:left-7/12 lg:-ml-48">
-          <LinkCard href="https://www.rwth-aachen.de/cms/~a/root/?lidx=1">
-            <p className="leading-tight group-hover:text-light group-focus:text-light">
-              Student @ <br />
-              <span
-                className={`font-bold align-middle text-primary group-hover:text-light group-focus:text-light ${LinkCard.animation}`}
-              >
-                RWTH Aachen
-              </span>
-            </p>
-          </LinkCard>
-        </div>
-      </ResponsiveSplit.Element>
-      <ResponsiveSplit.Element className="flex flex-col items-stretch px-8 text-4xl lg:items-center lg:justify-end lg:flex-grow">
-        <div className="flex flex-col items-center h-full my-12 lg:absolute lg:left-0 lg:bottom-0 lg:h-auto lg:m-0 lg:flex-row lg:w-7/12 lg:px-16 lg:pb-16">
-          <div className="w-full mb-8 lg:mb-0 lg:mr-12">
-            <CtaLink href="/projects">Projects</CtaLink>
-          </div>
-          <div className="w-full">
-            <CtaLink href="#">About me</CtaLink>
-          </div>
-        </div>
-        <div className="mb-10 lg:w-full lg:mb-16 lg:py-3">
-          <CtaLink href="#" subtle>
-            Contact me
-          </CtaLink>
-        </div>
-      </ResponsiveSplit.Element>
-    </ResponsiveSplit>
-  </Page>
-);
-export default Home;
+interface IndexPageProps {
+  subscriptionData: LivePreview<IndexPageQuery, IndexPageQueryVariables>;
+}
+const IndexPage: React.FC<IndexPageProps> = ({ subscriptionData }) => {
+  const { data } = useQuerySubscription<
+    IndexPageQuery,
+    IndexPageQueryVariables
+  >(subscriptionData);
+  const project = data!.project;
+
+  return (
+    <Page.Main className="w-full h-full flex flex-col">
+      <SEO
+        data={{
+          title: 'Alexander Baron',
+          description: 'My personal website',
+        }}
+      />
+      <div className="mb-16">
+        <Header>Alexander Baron.</Header>
+      </div>
+      {!!project && (
+        <Link href={`/projects/${project.slug}`}>
+          <a>
+            <motion.div layoutId={`image_${project.heroImage?.id}`}>
+              <ProjectHero
+                title={project.title ?? 'NO TITLE'}
+                techStack={project.techStack.map(
+                  ({ title }) => title ?? 'NO TITLE'
+                )}
+                image={
+                  project.heroImage!.responsiveImage as ResponsiveImageType
+                }
+                compact={false}
+              />
+            </motion.div>
+          </a>
+        </Link>
+      )}
+      <div className="flex flex-row mt-16">
+        <Link href="/projects">
+          <a>
+            <Text>See all projects</Text>
+          </a>
+        </Link>
+      </div>
+    </Page.Main>
+  );
+};
+export default IndexPage;
+
+const QUERY = gql`
+  query IndexPage {
+    project(orderBy: _createdAt_DESC) {
+      slug
+      title
+      techStack {
+        title
+      }
+      createdAt
+      heroImage {
+        id
+        responsiveImage(
+          imgixParams: { fit: crop, w: 1680, h: 720, auto: format }
+        ) {
+          srcSet
+          webpSrcSet
+          sizes
+          src
+          width
+          height
+          aspectRatio
+          alt
+          title
+          base64
+        }
+      }
+    }
+  }
+`;
+export const getStaticProps: GetStaticProps<IndexPageProps> = async ({
+  preview,
+}) => {
+  const subscription = await queryCMSLive<
+    IndexPageQuery,
+    IndexPageQueryVariables
+  >(QUERY, preview);
+
+  return {
+    props: {
+      subscriptionData: subscription,
+    },
+  };
+};

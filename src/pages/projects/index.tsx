@@ -1,69 +1,105 @@
-import { gql } from '@apollo/client';
-import { GetStaticProps } from 'next';
-import Link from 'next/link';
 import React from 'react';
-import Page from '../../components/layout/Page';
-import client from '../../core/graphql';
+import { gql } from 'graphql-request';
+import { GetStaticProps } from 'next';
+import {
+  Image,
+  ResponsiveImageType,
+  useQuerySubscription,
+} from 'react-datocms';
+import Link from 'next/link';
+
+import Header from '../../components/atomic/Header';
+import { LivePreview, queryCMSLive } from '../../core/cms';
 import {
   ProjectsListQuery,
   ProjectsListQueryVariables,
 } from '../../generated/graphql';
+import Page from '../../components/layout/Page';
+import { motion } from 'framer-motion';
+import ProjectHero from '../../components/feature/projects/ProjectHero';
+import SEO from '../../components/feature/SEO';
 
-interface Props {
-  projects: ProjectsListQuery['projectCollection'];
+export interface ProjectsListPageProps {
+  subscriptionData: LivePreview<ProjectsListQuery, ProjectsListQueryVariables>;
 }
-const ProjectPage: React.FC<Props> = ({ projects }) => (
-  <Page>
-    <h1 className="text-primary text-5xl md:text-6xl mb-6">Projects</h1>
-    <ul>
-      {projects?.items.map((project) => (
-        <li key={project?.slug} className="block mt-4 md:mt-12">
-          <Link href={`/projects/${project?.slug}`}>
-            <a className="flex flex-col group border-4 border-light hover:border-primary focus:border-primary outline-none transition-colors">
-              <div className="pb-1 group-focus:bg-primary group-hover:bg-primary transition-colors">
-                <span className="text-primary group-focus:text-light group-hover:text-light text-2xl md:text-4xl transition-colors">
-                  {project?.name ?? 'UNNAMED PROJECT'}{' '}
-                  {project?.sys.publishedAt === null && (
-                    <span className="text-positive">- PREVIEW</span>
-                  )}
-                </span>
-              </div>
-              <img
-                src={
-                  project?.coverImage?.url ?? 'https://picsum.photos/960/540'
-                }
-                aria-hidden="true"
-              />
+const ProjectsListPage: React.FC<ProjectsListPageProps> = ({
+  subscriptionData,
+}) => {
+  const { data } = useQuerySubscription<
+    ProjectsListQuery,
+    ProjectsListQueryVariables
+  >(subscriptionData);
+  const projects = data!.allProjects;
+
+  return (
+    <Page.Main>
+      <SEO
+        data={{
+          title: 'Projects',
+          description: "See the projects I've worked on",
+        }}
+      />
+      <div className="mb-16">
+        <Header>Projects.</Header>
+      </div>
+      <div>
+        {projects.map((project) => (
+          <Link href={`/projects/${project.slug}`} key={project.slug}>
+            <a className="flex flex-col max-w-5xl mb-10 lg:mb-16">
+              <motion.div layoutId={`image_${project.heroImage?.id}`}>
+                <ProjectHero
+                  title={project.title ?? 'NO TITLE'}
+                  image={
+                    project.heroImage!.responsiveImage as ResponsiveImageType
+                  }
+                  compact
+                />
+              </motion.div>
             </a>
           </Link>
-        </li>
-      ))}
-    </ul>
-  </Page>
-);
-export default ProjectPage;
+        ))}
+      </div>
+    </Page.Main>
+  );
+};
+export default ProjectsListPage;
 
-const query = gql`
-  query ProjectsList($preview: Boolean!) {
-    projectCollection(limit: 500, preview: $preview) {
-      items {
-        sys {
-          publishedAt
-        }
-        name
-        slug
-        coverImage {
-          url
+const QUERY = gql`
+  query ProjectsList {
+    allProjects(orderBy: _createdAt_DESC) {
+      slug
+      title
+      heroImage {
+        id
+        responsiveImage(
+          imgixParams: { fit: crop, w: 1680, h: 720, auto: format }
+        ) {
+          srcSet
+          webpSrcSet
+          sizes
+          src
+          width
+          height
+          aspectRatio
+          alt
+          title
+          base64
         }
       }
     }
   }
 `;
-export const getStaticProps: GetStaticProps<Props> = async ({ preview }) => {
-  const { data } = await client.query<
+export const getStaticProps: GetStaticProps<ProjectsListPageProps> = async ({
+  preview,
+}) => {
+  const subscription = await queryCMSLive<
     ProjectsListQuery,
     ProjectsListQueryVariables
-  >({ query, variables: { preview: preview ?? false } });
+  >(QUERY, preview);
 
-  return { props: { projects: data.projectCollection }, revalidate: 1 };
+  return {
+    props: {
+      subscriptionData: subscription,
+    },
+  };
 };
