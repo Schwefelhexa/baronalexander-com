@@ -127,6 +127,7 @@ export const getStaticProps: GetStaticProps<ProjectPageProps> = async ({
     props: {
       subscriptionData: subscription,
     },
+    revalidate: 60, // Every minute
   };
 };
 
