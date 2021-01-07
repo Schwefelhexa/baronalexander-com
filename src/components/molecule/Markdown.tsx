@@ -6,7 +6,7 @@ export interface MarkdownProps {
   className?: string;
 }
 const Markdown: React.FC<MarkdownProps> = ({ children, className }) => (
-  <div className={`markdown ${className}`}>
+  <div className={`markdown prose lg:prose-xl ${className}`}>
     <ReactMarkdown>{children}</ReactMarkdown>
   </div>
 );

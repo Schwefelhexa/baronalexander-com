@@ -8,9 +8,6 @@ body,
   @apply min-h-full dark:bg-dark;
 }
 
-.markdown {
-  @apply text-xl dark:text-light;
-}
-.markdown p {
-  @apply mb-4;
+.prose * {
+  @apply dark:text-light;
 }

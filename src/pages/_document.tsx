@@ -31,7 +31,7 @@ const darkModeScript = `
   function setDarkMode(enabled) {
     localStorage.setItem(key, enabled ? 'true' : 'false');
     if (enabled) {
-      container.classList.add('dark');
+      //container.classList.add('dark');
     }
   }
 
