@@ -20,11 +20,11 @@ const options = {
     signingKey: process.env.AUTH_JWT_SIGNING_KEY,
   },
   callbacks: {
-    signIn: async (user) => {
-      if (!user.email) return false;
+    signIn: async ({ email }) => {
+      if (!email) return false;
 
       const allowed = JSON.parse(process.env.PREVIEW_USERS) as string[];
-      return allowed.includes(user.email!);
+      return allowed.includes(email);
     },
   },
 } as InitOptions;

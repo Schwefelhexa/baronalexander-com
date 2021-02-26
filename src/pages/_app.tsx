@@ -1,46 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import Head from 'next/head';
 import { AppProps } from 'next/app';
-import { Provider, useSession } from 'next-auth/client';
-import { AnimateSharedLayout } from 'framer-motion';
-import { Router } from 'next/router';
+import { Provider } from 'next-auth/client';
 
-import Page from '../components/layout/Page';
-import { usePreviewMode } from '../core/preview';
 import '../styles/tailwind.css';
-import DarkModeProvider from '../components/feature/dark_mode/DarkModeProvider';
-
-interface AppWithProvidersProps {
-  router: Router;
-}
-const AppWithProviders: React.FC<AppWithProvidersProps> = ({
-  children,
-  router,
-}) => {
-  const [session, loading] = useSession();
-  const [isPreview, setPreviewMode] = usePreviewMode();
-
-  return (
-    <Page
-      loggedIn={!loading && session !== null}
-      preview={isPreview}
-      setPreview={(isPreview) =>
-        setPreviewMode(isPreview).then(() => router.reload())
-      }
-    >
-      {children}
-    </Page>
-  );
-};
 
 const App: React.FC<AppProps> = ({ Component, pageProps, router }) => (
-  <AnimateSharedLayout>
-    <Provider session={pageProps.session}>
-      <DarkModeProvider>
-        <AppWithProviders router={router}>
-          <Component {...pageProps} />
-        </AppWithProviders>
-      </DarkModeProvider>
-    </Provider>
-  </AnimateSharedLayout>
+  <Provider session={pageProps.session}>
+    <Head>
+      <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+    </Head>
+    <Component {...pageProps} />
+  </Provider>
 );
 export default App;

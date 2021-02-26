@@ -1,15 +1,12 @@
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
   purge: ['src/**/*.tsx', 'src/**/*.ts'],
-  darkMode: 'class',
+  darkMode: false,
   theme: {
-    colors: {
-      light: '#FFFFFF',
-      dark: '#0E181B',
-    },
     extend: {
-      spacing: {
-        'screen-1/2': '50vh',
-        'screen-2/3': '66.66667vh',
+      fontFamily: {
+        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
     },
   },

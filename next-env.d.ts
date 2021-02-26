@@ -3,7 +3,7 @@
 
 declare namespace NodeJS {
   interface ProcessEnv {
-    readonly DATOCMS_API_TOKEN: string;
+    readonly GRAPH_CMS_TOKEN: string;
 
     readonly AUTH_GOOGLE_ID: string;
     readonly AUTH_GOOGLE_SECRET: string;

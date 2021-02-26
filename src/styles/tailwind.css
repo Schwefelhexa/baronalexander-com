@@ -5,9 +5,5 @@
 html,
 body,
 #__next {
-  @apply min-h-full dark:bg-dark;
-}
-
-.prose * {
-  @apply dark:text-light;
+  @apply min-h-full;
 }

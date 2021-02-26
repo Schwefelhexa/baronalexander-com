@@ -1,110 +1,22 @@
+import { useSession } from 'next-auth/client';
 import React from 'react';
-import { gql } from 'graphql-request';
-import { GetStaticProps } from 'next';
-import { ResponsiveImageType, useQuerySubscription } from 'react-datocms';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { usePreviewMode } from '../core/preview';
 
-import Header from '../components/atomic/Header';
-import ProjectHero from '../components/feature/projects/ProjectHero';
-import { IndexPageQuery, IndexPageQueryVariables } from '../generated/graphql';
-import { LivePreview, queryCMSLive } from '../core/cms';
-import Page from '../components/layout/Page';
-import Text from '../components/atomic/Text';
-import SEO from '../components/feature/SEO';
-
-interface IndexPageProps {
-  subscriptionData: LivePreview<IndexPageQuery, IndexPageQueryVariables>;
-}
-const IndexPage: React.FC<IndexPageProps> = ({ subscriptionData }) => {
-  const { data } = useQuerySubscription<
-    IndexPageQuery,
-    IndexPageQueryVariables
-  >(subscriptionData);
-  const project = data!.project;
+interface IndexPageProps {}
+const IndexPage: React.FC<IndexPageProps> = () => {
+  const [session, loadingSession] = useSession();
+  const [preview, setPreview] = usePreviewMode();
 
   return (
-    <Page.Main className="w-full h-full flex flex-col">
-      <SEO
-        data={{
-          title: 'Alexander Baron',
-          description: 'My personal website',
-        }}
-      />
-      <div className="mb-16">
-        <Header>Alexander Baron.</Header>
-      </div>
-      {!!project && (
-        <Link href={`/projects/${project.slug}`}>
-          <a>
-            <motion.div layoutId={`image_${project.heroImage?.id}`}>
-              <ProjectHero
-                title={project.title ?? 'NO TITLE'}
-                techStack={project.techStack.map(
-                  ({ title }) => title ?? 'NO TITLE'
-                )}
-                image={
-                  project.heroImage!.responsiveImage as ResponsiveImageType
-                }
-                compact={false}
-              />
-            </motion.div>
-          </a>
-        </Link>
+    <div>
+      <h1>Hello World!</h1>
+      {preview && <p>You are in preview mode</p>}
+      {!loadingSession && session && (
+        <button onClick={() => setPreview(!preview)}>
+          Toggle preview mode
+        </button>
       )}
-      <div className="flex flex-row mt-16">
-        <Link href="/projects">
-          <a>
-            <Text>See all projects</Text>
-          </a>
-        </Link>
-      </div>
-    </Page.Main>
+    </div>
   );
 };
 export default IndexPage;
-
-const QUERY = gql`
-  query IndexPage {
-    project(orderBy: _createdAt_DESC) {
-      slug
-      title
-      techStack {
-        title
-      }
-      createdAt
-      heroImage {
-        id
-        responsiveImage(
-          imgixParams: { fit: crop, w: 1680, h: 720, auto: format }
-        ) {
-          srcSet
-          webpSrcSet
-          sizes
-          src
-          width
-          height
-          aspectRatio
-          alt
-          title
-          base64
-        }
-      }
-    }
-  }
-`;
-export const getStaticProps: GetStaticProps<IndexPageProps> = async ({
-  preview,
-}) => {
-  const subscription = await queryCMSLive<
-    IndexPageQuery,
-    IndexPageQueryVariables
-  >(QUERY, preview);
-
-  return {
-    props: {
-      subscriptionData: subscription,
-    },
-    revalidate: 60, // Every minute
-  };
-};

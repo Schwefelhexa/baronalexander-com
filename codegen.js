@@ -3,9 +3,9 @@ require('dotenv').config();
 module.exports = {
   overwrite: true,
   schema: {
-    'https://graphql.datocms.com': {
+    'https://api-eu-central-1.graphcms.com/v2/ckll0v7pydvbk01z39gg80koh/master': {
       headers: {
-        Authorization: `Bearer ${process.env.DATOCMS_API_TOKEN}`,
+        Authorization: `Bearer ${process.env.GRAPH_CMS_TOKEN}`,
       },
     },
   },
