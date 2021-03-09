@@ -36,6 +36,7 @@ const IndexPage: React.FC<IndexPageProps> = ({ data }) => {
           Toggle preview mode
         </Button>
       )}
+      <Small>{JSON.stringify(session)}</Small>
       <Small>
         {data.blogPostCollection?.total} blog post(s) have been published
       </Small>
