@@ -3,9 +3,9 @@ require('dotenv').config();
 module.exports = {
   overwrite: true,
   schema: {
-    'https://api-eu-central-1.graphcms.com/v2/ckll0v7pydvbk01z39gg80koh/master': {
+    [process.env.CMS_URL]: {
       headers: {
-        Authorization: `Bearer ${process.env.GRAPH_CMS_TOKEN}`,
+        Authorization: `Bearer ${process.env.CMS_TOKEN}`,
       },
     },
   },
@@ -17,7 +17,7 @@ module.exports = {
 
   documents: 'src/**/*.tsx',
   generates: {
-    'src/generated/graphql.tsx': {
+    'src/generated/graphql.ts': {
       plugins: ['typescript', 'typescript-operations'],
     },
     './graphql.schema.json': {
