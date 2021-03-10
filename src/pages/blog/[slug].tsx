@@ -8,22 +8,43 @@ import {
   BlogPostQueryVariables,
   BlogSlugsQuery,
 } from '../../generated/graphql';
+import RichText, { AssetData } from '../../components/RichText';
+import tw from 'twin.macro';
 
 type Post = NonNullable<
   NonNullable<NonNullable<BlogPostQuery['blogPostCollection']>['items']>[0]
 >;
 
+const Heading1 = tw.h1`text-3xl text-center leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl`;
+const SubHeading = tw.p`text-base text-center text-yellow-600 font-semibold tracking-wide uppercase`; // TODO Find a way to add role="doc-subtitle" here
+
 export interface BlogPostPageProps {
   post: Post;
 }
 const BlogPostPage: React.FC<BlogPostPageProps> = ({ post }) => {
-  return <h1>{post.title}</h1>;
+  return (
+    <div tw="relative py-16 bg-white overflow-hidden">
+      <div tw="relative px-4 sm:px-6 lg:px-8">
+        <div tw="max-w-prose mx-auto">
+          {post.subtitle && (
+            <SubHeading role="doc-subtitle">{post.subtitle}</SubHeading>
+          )}
+          <Heading1>{post.title}</Heading1>
+        </div>
+        <div tw="mt-6">
+          <RichText assets={post.content?.links.assets.block as AssetData[]}>
+            {post.content?.json}
+          </RichText>
+        </div>
+      </div>
+    </div>
+  );
 };
 export default BlogPostPage;
 
 const BLOG_POST_QUERY = gql`
   query BlogPost($slug: String!) {
-    blogPostCollection(where: { slug: $slug }) {
+    blogPostCollection(where: { slug: $slug }, limit: 1) {
       total
       items {
         title
@@ -35,6 +56,21 @@ const BLOG_POST_QUERY = gql`
         }
         content {
           json
+          links {
+            assets {
+              block {
+                sys {
+                  id
+                }
+                title
+                description
+                url
+                width
+                height
+                contentType
+              }
+            }
+          }
         }
       }
     }
