@@ -91,7 +91,7 @@ export const getStaticProps: GetStaticProps<BlogPostPageProps> = async ({
 
   if (!post) throw new Error('Invalid blog post from CMS');
 
-  return { props: { post } };
+  return { props: { post }, revalidate: 30 };
 };
 
 const BLOG_SLUGS_QUERY = gql`
